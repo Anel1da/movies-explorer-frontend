@@ -1,0 +1,132 @@
+.navigation {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, .5);
+    visibility: hidden;
+    display: flex;
+    opacity: 0;
+    transition: visibility .3s, opacity .5s linear;
+} 
+
+.navigation_opened {
+    opacity: 1;
+    visibility: visible;
+}
+
+.navigation__container {
+    background-color: #202020;
+    width: 520px;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .navigation__container {
+        width: 320px;
+    }
+}
+
+.navigation__close-btn {
+    background-image: url(./../../images/close-icon.svg);
+    background-color: transparent;
+    outline: none;
+    width: 22px;
+    height: 22px;
+    border: none;
+    transition: opacity .5s ease;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    cursor: pointer;
+}
+
+.navigation__close-btn:hover{
+    opacity: 0.6; 
+}
+
+.navigation__links{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    margin: 159px auto;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .navigation__links {
+        margin: 144px auto 444px;
+    }
+}
+.navigation__link {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 28px;
+    padding-bottom: 4px;
+    transition: opacity .5s ease;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .navigation__link {
+        margin-bottom: 24px;
+    }
+}
+
+.navigation__link:last-of-type{
+    margin-bottom: 0;
+}
+
+.navigation__link:hover {
+    opacity: 0.6; 
+    border-bottom: 2px solid #FFFFFF;
+}
+
+.navigation__link_active {
+   border-bottom: 2px solid #FFFFFF;
+}
+
+.navigation__profile{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    transition: opacity .5s ease;
+    margin: 0 auto 92px;
+}
+
+.navigation__profile:hover {
+    opacity: 0.6; 
+}
+
+.profile__profile-btn {
+ background-color: #313131;
+ border-radius: 6px;
+ margin-left: 13px;
+ width: 30px;
+ height: 30px;
+ padding: 9px;
+ box-sizing: border-box;
+ transition: opacity .5s ease;
+}
+
+.profile__profile-btn:hover {
+    opacity: 0.6; 
+}

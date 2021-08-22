@@ -1,0 +1,13 @@
+.movies {
+    width: 100%;
+    max-width: 1280px;
+    min-width: 320px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+    .movies {
+        max-width: 768px;
+    }
+}
