@@ -5,7 +5,7 @@ import profile from "../../images/profile.svg";
 
 export default function Navigation() {
   return (
-    <section className="navigation navigation_opened">
+    <section className="navigation ">
       <div className="navigation__container">
         <button
           type="button"
@@ -16,7 +16,7 @@ export default function Navigation() {
           <NavLink
             exact
             to="/"
-            className="navigation__link navigation__link_active"
+            className="navigation__link"
             activeClassName="navigation__link_active"
           >
             Главная

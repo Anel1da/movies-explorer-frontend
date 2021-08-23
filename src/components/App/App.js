@@ -21,14 +21,17 @@ function App() {
       </Route>
       <Route path="/movies">
         <Movies />
+        <Navigation />
         <Footer />
       </Route>
       <Route path="/saved-movies">
         <Movies />
         <Footer />
+        <Navigation />
       </Route>
       <Route path="/profile">
         <Profile />
+        <Navigation />
       </Route>
       <Route path="/signup">
         <Register />
@@ -38,9 +41,6 @@ function App() {
       </Route>
       <Route path="/notfound">
         <NotFound /> {/* проверка отрисовки блока */}
-      </Route>
-      <Route path="/navigation">
-        <Navigation /> {/* проверка отрисовки блока */}
       </Route>
     </div>
   );

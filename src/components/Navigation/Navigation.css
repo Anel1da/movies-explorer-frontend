@@ -11,6 +11,13 @@
     transition: visibility .3s, opacity .5s linear;
 } 
 
+@media screen and (min-width: 320px) and (max-width: 1023px) {
+    .navigation_opened {
+        opacity: 1;
+        visibility: visible;
+    }
+
+}
 .navigation_opened {
     opacity: 1;
     visibility: visible;
