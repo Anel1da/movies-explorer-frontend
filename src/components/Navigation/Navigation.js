@@ -5,7 +5,7 @@ import profile from "../../images/profile.svg";
 
 export default function Navigation() {
   return (
-    <section className="navigation ">
+    <section className="navigation">
       <div className="navigation__container">
         <button
           type="button"
