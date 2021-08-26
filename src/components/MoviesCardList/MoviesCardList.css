@@ -27,5 +27,6 @@
         grid-template-columns: repeat(1, 1fr);
         row-gap: 39px;
         padding: 40px 0 13px;
+        max-width: 300px;
   }
   }
