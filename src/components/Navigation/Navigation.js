@@ -5,40 +5,40 @@ import profile from "../../images/profile.svg";
 
 export default function Navigation() {
   return (
-    <section className="navigation">
-      <div className="navigation__container">
+    <section className="popup popup_opened ">
+      <div className="popup__container">
         <button
           type="button"
-          className="navigation__close-btn"
+          className="popup__close-btn"
           aria-label="Закрыть окно"
         ></button>
-        <nav className="navigation__links">
+        <nav className="popup__links">
           <NavLink
             exact
             to="/"
-            className="navigation__link"
-            activeClassName="navigation__link_active"
+            className="popup__link"
+            activeClassName="popup__link_active"
           >
             Главная
           </NavLink>
           <NavLink
             to="/movies"
-            className="navigation__link"
-            activeClassName="navigation__link_active"
+            className="popup__link"
+            activeClassName="popup__link_active"
           >
             Фильмы
           </NavLink>
           <NavLink
             to="/saved-movies"
-            className="navigation__link"
-            activeClassName="navigation__link_active"
+            className="popup__link"
+            activeClassName="popup__link_active"
           >
             Сохраненные фильмы
           </NavLink>
         </nav>
-        <Link to="/profile" className="navigation__profile">
+        <Link to="/profile" className="popup__profile">
           <p>Аккаунт</p>
-          <img src={profile} alt="Аккаунт" className="profile__profile-btn" />
+          <img src={profile} alt="Аккаунт" className="popup__profile-btn" />
         </Link>
       </div>
     </section>
