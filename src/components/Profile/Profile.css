@@ -9,7 +9,7 @@
     padding-top: 74px;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media screen and (min-width: 768px) and (max-width: 1200px) {
     .profile {
         padding-top: 236px;
     }
@@ -41,7 +41,7 @@
     margin: 0 0 123px;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media screen and (min-width: 768px) and (max-width: 1200px) {
     .profile__title {
         margin: 0 0 96px;
     }
@@ -98,7 +98,7 @@
     margin: 220px auto 16px;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media screen and (min-width: 768px) and (max-width: 1200px) {
     .profile__edit-button {
         margin: 210px auto 16px;
     }

@@ -3,7 +3,7 @@
   padding: 20px 40px  0;
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1023px){
+  @media screen and (min-width: 768px) and (max-width: 1200px){
     .promo {
        padding: 20px 20px 0;
     }
@@ -36,7 +36,7 @@
  
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1023px) {
+  @media screen and (min-width: 768px) and (max-width: 1200px) {
     .promo__title {
       font-size: 40px;
       line-height: 52px;

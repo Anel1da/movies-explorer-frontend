@@ -5,7 +5,7 @@ import profile from "../../images/profile.svg";
 
 export default function Navigation() {
   return (
-    <section className="popup popup_opened ">
+    <section className="popup ">
       <div className="popup__container">
         <button
           type="button"
