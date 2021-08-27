@@ -1,0 +1,37 @@
+.more {
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.more__btn {
+    font-family: Inter;
+    font-style: normal;
+    width: 320px;
+    height: 36px;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    background-color: transparent;
+    border: 1px solid #424242;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 6px;
+    transition: all .5s ease;
+    margin: 50px auto 80px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .more__btn {
+        width: 240px;
+    }
+}
+.more__btn:hover {
+    opacity: 0.6;
+    border-bottom: 2px solid #FFFFFF;
+  
+}
+
+.more__btn_hidden {
+    display: none;
+  }
