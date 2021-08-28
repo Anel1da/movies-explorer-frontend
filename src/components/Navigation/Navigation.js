@@ -3,14 +3,15 @@ import { Link, NavLink } from "react-router-dom";
 import "./Navigation.css";
 import profile from "../../images/profile.svg";
 
-export default function Navigation() {
+export default function Navigation({ isOpen, onClose }) {
   return (
-    <section className="popup ">
+    <section className={`popup ${isOpen && "popup_opened"}`}>
       <div className="popup__container">
         <button
           type="button"
           className="popup__close-btn"
           aria-label="Закрыть окно"
+          onClick={onClose}
         ></button>
         <nav className="popup__links">
           <NavLink
@@ -18,6 +19,7 @@ export default function Navigation() {
             to="/"
             className="popup__link"
             activeClassName="popup__link_active"
+            onClick={onClose}
           >
             Главная
           </NavLink>
@@ -25,6 +27,7 @@ export default function Navigation() {
             to="/movies"
             className="popup__link"
             activeClassName="popup__link_active"
+            onClick={onClose}
           >
             Фильмы
           </NavLink>
@@ -32,11 +35,12 @@ export default function Navigation() {
             to="/saved-movies"
             className="popup__link"
             activeClassName="popup__link_active"
+            onClick={onClose}
           >
             Сохраненные фильмы
           </NavLink>
         </nav>
-        <Link to="/profile" className="popup__profile">
+        <Link to="/profile" className="popup__profile" onClick={onClose}>
           <p>Аккаунт</p>
           <img src={profile} alt="Аккаунт" className="popup__profile-btn" />
         </Link>

@@ -1,8 +1,9 @@
 import "./Profile.css";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 
-export default function Profile() {
+export default function Profile({ handleLogOut }) {
   return (
     <section className="profile">
       <h2 className="profile__title">{`Привет, Виталий!`}</h2>
@@ -38,9 +39,9 @@ export default function Profile() {
         <button className="profile__edit-button" type="submit">
           Редактировать
         </button>
-        <button className="profile__logout-button" type="submit">
+        <NavLink to="/" className="profile__logout" onClick={handleLogOut}>
           Выйти из аккаунта
-        </button>
+        </NavLink>
       </form>
     </section>
   );

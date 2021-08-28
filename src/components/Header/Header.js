@@ -3,7 +3,7 @@ import logo from "../../images/logo.svg";
 import profile from "../../images/profile.svg";
 import { Link, Route, Switch } from "react-router-dom";
 
-export default function Header() {
+export default function Header({ onClick }) {
   return (
     <Switch>
       <Route exact path="/">
@@ -46,7 +46,11 @@ export default function Header() {
             <p>Аккаунт</p>
             <img src={profile} alt="Аккаунт" className="header__profile-btn" />
           </Link>
-          <button type="button" className="header__btn-menu"></button>
+          <button
+            type="button"
+            className="header__btn-menu"
+            onClick={onClick}
+          ></button>
         </div>
       </Route>
 
@@ -70,7 +74,11 @@ export default function Header() {
             <p>Аккаунт</p>
             <img src={profile} alt="Аккаунт" className="header__profile-btn" />
           </Link>
-          <button type="button" className="header__btn-menu"></button>
+          <button
+            type="button"
+            className="header__btn-menu"
+            onClick={onClick}
+          ></button>
         </div>
       </Route>
 
@@ -94,7 +102,11 @@ export default function Header() {
             <p>Аккаунт</p>
             <img src={profile} alt="Аккаунт" className="header__profile-btn" />
           </Link>
-          <button type="button" className="header__btn-menu"></button>
+          <button
+            type="button"
+            className="header__btn-menu"
+            onClick={onClick}
+          ></button>
         </div>
       </Route>
     </Switch>

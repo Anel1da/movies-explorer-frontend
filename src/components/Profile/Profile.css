@@ -11,6 +11,7 @@
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
     .profile {
+      
         padding-top: 236px;
     }
 }
@@ -22,6 +23,7 @@
 .profile__form  {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
 }
 
@@ -115,7 +117,7 @@
     opacity: 0.6;   
 }
 
-.profile__logout-button {
+.profile__logout {
     font-family: Inter;
     font-style: normal;
     font-weight: normal;
@@ -124,6 +126,7 @@
     color: #EE3465;
     border: none;
     background: transparent;
+    text-decoration: none; 
     transition: all .5s ease;
 }
 
@@ -135,7 +138,7 @@
 
 }
 
-.profile__logout-button:hover {
+.profile__logout:hover {
     opacity: 0.6;   
 }
 
