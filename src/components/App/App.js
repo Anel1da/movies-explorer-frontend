@@ -16,8 +16,6 @@ import { InfoTooltip } from "../InfoTooltip/InfoTooltip";
 import tooltipSuccess from "./../../images/tooltip-success.svg";
 import tooltipDeny from "./../../images/tooltip-deny.svg";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import mainApi from "../../utils/MainApi";
-import moviesApi from "../../utils/MoviesApi";
 
 function App() {
   const history = useHistory();
@@ -26,24 +24,13 @@ function App() {
   const [isNavigationPopupOpened, setIsNavigationPopupOpened] =
     React.useState(false);
 
-  const [currentUser, setCurrentUser] = React.useState({});
+  /*   const [currentUser, setCurrentUser] = React.useState({}); */
   const [loggedIn, setLoggedIn] = React.useState(null);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [infoToolTipMessage, setInfoToolTipMessage] = React.useState({
     icon: "",
     message: "",
   });
-
-  useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    mainApi
-      .getUsersInfo(jwt)
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
-        console.log(userInfo);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   //обработчики событий
   const handleBurgerMenuClick = () => {
@@ -61,31 +48,6 @@ function App() {
   const closeAllPopups = () => {
     setIsNavigationPopupOpened(false);
     setIsInfoToolTipOpen(false);
-  };
-
-  //авторизация пользователя
-  const handleLogin = ({ email, password }) => {
-    return auth
-      .authorize({ email, password })
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        setLoggedIn(true);
-        handleInfoToolTipMessage({
-          icon: tooltipSuccess,
-          message: "Вы успешно авторизовались!",
-        });
-        handleInfoToolTipOpen(true);
-        history.push("/movies");
-      })
-
-      .catch((error) => {
-        handleInfoToolTipMessage({
-          icon: tooltipDeny,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
-        });
-        handleInfoToolTipOpen(true);
-        console.log(error);
-      });
   };
 
   //Регистрация пользователя
@@ -112,60 +74,54 @@ function App() {
 
   //выход
 
-  const handleLogOut = () => {
+  /*   const handleLogOut = () => {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
     setCurrentUser({});
   };
+ */
+
+
+// поиск фильмов
+
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header onClick={handleBurgerMenuClick} />
-        <Route exact path="/">
-          <Main />
-          <Footer />
-        </Route>
-        <Route path="/movies">
-          <Movies />
-          <Navigation
-            isOpen={isNavigationPopupOpened}
-            onClose={closeAllPopups}
-          />
-          <Footer />
-        </Route>
-        <Route path="/saved-movies">
-          <Movies />
+    <div className="page">
+      <Header onClick={handleBurgerMenuClick} />
+      <Route exact path="/">
+        <Main />
+        <Footer />
+      </Route>
+      <Route path="/movies">
+        <Movies />
+        <Navigation isOpen={isNavigationPopupOpened} onClose={closeAllPopups} />
+        <Footer />
+      </Route>
+      <Route path="/saved-movies">
+        <Movies />
 
-          <Footer />
-          <Navigation
-            isOpen={isNavigationPopupOpened}
-            onClose={closeAllPopups}
-          />
-        </Route>
-        <Route path="/profile">
-          <Profile handleLogOut={handleLogOut} />
-          <Navigation
-            isOpen={isNavigationPopupOpened}
-            onClose={closeAllPopups}
-          />
-        </Route>
-        <Route path="/signup">
-          <Register onRegister={handleRegister} />
-        </Route>
-        <Route path="/signin">
-          <Login onLogin={handleLogin} />
-        </Route>
-        {/*   <Route path="*">
+        <Footer />
+        <Navigation isOpen={isNavigationPopupOpened} onClose={closeAllPopups} />
+      </Route>
+      <Route path="/profile">
+        <Profile /* handleLogOut={handleLogOut} */ />
+        <Navigation isOpen={isNavigationPopupOpened} onClose={closeAllPopups} />
+      </Route>
+      <Route path="/signup">
+        <Register onRegister={handleRegister} />
+      </Route>
+      <Route path="/signin">
+        <Login /* onLogin={handleLogin} */ />
+      </Route>
+      {/*   <Route path="*">
         <NotFound />
       </Route> */}
-      </div>
       <InfoTooltip
         isOpen={isInfoToolTipOpen}
         onClose={closeAllPopups}
         infoToolTipMessage={infoToolTipMessage}
       />
-    </CurrentUserContext.Provider>
+    </div>
   );
 }
 
