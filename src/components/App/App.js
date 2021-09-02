@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 import "./App.css";
 import Header from "../Header/Header";
@@ -11,6 +11,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Navigation from "../Navigation/Navigation";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import * as auth from "../../utils/auth";
 import * as MainApi from "../../utils/MainApi";
 import { InfoTooltip } from "../InfoTooltip/InfoTooltip";
@@ -96,7 +97,7 @@ function App() {
       .catch((error) => {
         handleInfoToolTipMessage({
           icon: tooltipDeny,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
+          message: "Неправильный логин или пароль. Попробуйте ещё раз.",
         });
         handleInfoToolTipOpen(true);
         console.log(error);
@@ -109,14 +110,13 @@ function App() {
     auth
       .getUser()
       .then((user) => {
-        setLoggedIn();
+        setLoggedIn(true);
         setCurrentUser(user);
-        history.push("/movies");
       })
       .catch((error) => {
         handleInfoToolTipMessage({
           icon: tooltipDeny,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
+          message: "Пожалуйста авторизуйтесь для просмотра информации.",
         });
         handleInfoToolTipOpen(true);
         console.log(error);
@@ -156,47 +156,48 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header onClick={handleBurgerMenuClick} />
-        <Route exact path="/">
-          <Main />
-          <Footer />
-        </Route>
-        <Route path="/movies">
-          <Movies />
-          <Navigation
+        <Switch>
+          <Route exact path="/">
+            <Header onClick={handleBurgerMenuClick} loggedIn={loggedIn} />
+            <Main />
+            <Footer />
+          </Route>
+          <Route path="/signup">
+            <Register onRegister={handleRegister} />
+          </Route>
+          <Route path="/signin">
+            <Login onLogin={handleLogin} />
+          </Route>
+          <ProtectedRoute
+            path="/movies"
+            component={Movies}
+            loggedIn={loggedIn}
             isOpen={isNavigationPopupOpened}
             onClose={closeAllPopups}
+            onClick={handleBurgerMenuClick}
           />
-          <Footer />
-        </Route>
-        <Route path="/saved-movies">
-          <Movies />
-
-          <Footer />
-          <Navigation
+          <ProtectedRoute
+            path="/saved-movies"
+            loggedIn={loggedIn}
+            component={Movies}
             isOpen={isNavigationPopupOpened}
             onClose={closeAllPopups}
+            onClick={handleBurgerMenuClick}
           />
-        </Route>
-        <Route path="/profile">
-          <Profile
+          <ProtectedRoute
+            path="/profile"
+            loggedIn={loggedIn}
+            component={Profile}
             handleLogOut={handleLogOut}
             onUpdateProfile={handleUpdateProfile}
-          />
-          <Navigation
             isOpen={isNavigationPopupOpened}
             onClose={closeAllPopups}
+            onClick={handleBurgerMenuClick}
           />
-        </Route>
-        <Route path="/signup">
-          <Register onRegister={handleRegister} />
-        </Route>
-        <Route path="/signin">
-          <Login onLogin={handleLogin} />
-        </Route>
-        {/*   <Route path="*">
-        <NotFound />
-      </Route> */}
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
         <InfoTooltip
           isOpen={isInfoToolTipOpen}
           onClose={closeAllPopups}
