@@ -3,24 +3,13 @@ import { React, useState } from "react";
 import "./Register.css";
 /* import Preloader from "../Preloader/Preloader"; */
 import logo from "../../images/logo.svg";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 
 export default function Register({ onRegister }) {
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
+  const { values, errors, isValid, handleChange } = useFormWithValidation();
+  const { name, email, password } = values;
 
   const handleSubmit = (evt) => {
-    let { name, email, password } = userData;
     evt.preventDefault();
     onRegister({ name, email, password });
   };
@@ -42,14 +31,19 @@ export default function Register({ onRegister }) {
             id="name"
             name="name"
             type="name"
-            className="register__input"
+            className={`
+           register__input
+            ${errors.name && "register__input_falsy"}
+         `}
             placeholder="Имя"
             required
             onChange={handleChange}
-            value={userData.name}
+            minLength="2"
+            maxLength="30"
             autoComplete="off"
+            value={values.name || ""}
           />
-          <span className="register__error-message"></span>
+          <span className="register__error-message"> {errors.name || ""}</span>
         </label>
         <label className="register__label">
           <p className="register__input-title">E-mail</p>
@@ -57,15 +51,19 @@ export default function Register({ onRegister }) {
             id="email"
             name="email"
             type="email"
-            className="register__input"
+            className={`
+            register__input
+             ${errors.email && "register__input_falsy"}
+          `}
             required
             placeholder="Email"
             onChange={handleChange}
-            value={userData.email}
-            noValidate
+            minLength="2"
+            maxLength="30"
+            value={values.email || ""}
             autoComplete="off"
           ></input>
-          <span className="register__error-message"></span>
+          <span className="register__error-message"> {errors.email || ""}</span>
         </label>
         <label className="register__label">
           <p className="register__input-title">Пароль</p>
@@ -73,19 +71,31 @@ export default function Register({ onRegister }) {
             id="password"
             name="password"
             type="password"
-            className="register__input register__input_error"
+            className={`
+            register__input
+             ${errors.password && "register__input_falsy"}
+          `}
             placeholder="Пароль"
             required
-            noValidate
+            value={values.password || ""}
             onChange={handleChange}
-            value={userData.password}
             minLength="8"
             maxLength="30"
             autoComplete="off"
           ></input>
-          <span className="register__error-message"></span>
+          <span className="register__error-message">
+            {" "}
+            {errors.password || ""}
+          </span>
         </label>
-        <button className="register__signup" type="submit">
+        <button
+          className={`
+        register__signup-btn
+        ${!isValid && "register__signup-btn_disabled"}
+      `}
+          type="submit"
+          disabled={!isValid && true}
+        >
           Зарегистрироваться
         </button>
         <span className="register__login">

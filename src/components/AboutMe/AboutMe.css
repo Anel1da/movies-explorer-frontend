@@ -180,6 +180,7 @@
 .about-me__link:hover {
     opacity: 0.6;
     border-bottom: 2px solid #FFFFFF;
+    cursor: pointer;
  }
 
 .about-me__image{

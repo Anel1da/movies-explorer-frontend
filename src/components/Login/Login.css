@@ -53,7 +53,7 @@
 .login__label {
     width: 100%;
     margin-top: 24px;
-}
+    }
 
 .login__label:first-of-type{
     margin-top: 0;
@@ -84,24 +84,24 @@
     outline: 1px solid #424242;
   }
 
-  .login__input_error {
+.login__input_falsy {
+    color: #EE3465;  
+}
+
+
+.login__input_error {
     color: #EE3465;
   }
 
 .login__error-message {
-   display: none; 
+    top: 38px;
+    left: 0;
     font-size: 10px;
-    line-height: 12px;
     color: #EE3465;
-    padding-top: 5px;
-    box-sizing: border-box;
+    transition: opacity 0.3s;
 }
 
-.login__error-message_active{
-    display: flex;
-}
-
-.login__signin {
+.login__signin-btn {
     width: 100%;
     background-color: #4285F4;
     color: #FFFFFF;
@@ -116,17 +116,28 @@
     }
 
     @media screen and (min-width: 320px) and (max-width: 767px) {
-        .login__signin {
+        .login__signin-btn{
             margin-top: 267px;
             font-size: 12px;
             line-height: 15px;
         }
     }
 
-    .login__signin:hover {
+    .login__signin-btn:hover {
         opacity: 0.6;
+        cursor: pointer;
     }
     
+    .login__signin-btn_disabled {
+        background-color:#8B8B8B
+    }
+
+    .login__signin-btn_disabled:hover {
+        opacity: 0.6;  
+        cursor: not-allowed;
+    }
+
+
     .login__signup {
         font-size: 14px;
         line-height: 17px;
@@ -151,4 +162,5 @@
     .login__signup-link:hover {
         opacity: 0.6;   
         border-bottom: 2px solid #FFFFFF;
+        cursor: pointer;
     }

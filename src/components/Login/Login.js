@@ -3,24 +3,15 @@ import React, { useState } from "react";
 import "./Login.css";
 import Preloader from "../Preloader/Preloader";
 import logo from "../../images/logo.svg";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 
 export default function Login({ onLogin }) {
-  const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
+  const { values, errors, isValid, handleChange } = useFormWithValidation();
+  const { email, password } = values;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onLogin(userData);
+    onLogin({ email, password });
   };
 
   return (
@@ -36,15 +27,20 @@ export default function Login({ onLogin }) {
             id="email"
             name="email"
             type="email"
-            className="login__input"
+            className={`
+            login__input
+             ${errors.email && "login__input_falsy"}
+          `}
             required
             placeholder="Email"
             noValidate
+            minLength="2"
+            maxLength="30"
             onChange={handleChange}
-            value={userData.email}
+            value={values.email || ""}
             autoComplete="off"
           ></input>
-          <span className="login__error-message"></span>
+          <span className="login__error-message"> {errors.email || ""}</span>
         </label>
         <label className="login__label">
           <p className="login__input-title">Пароль</p>
@@ -52,17 +48,28 @@ export default function Login({ onLogin }) {
             id="password"
             name="password"
             type="password"
-            className="login__input"
+            minLength="8"
+            maxLength="30"
+            className={`
+            login__input
+             ${errors.password && "login__input_falsy"}
+          `}
             required
             placeholder="Пароль"
             onChange={handleChange}
-            value={userData.password}
             autoComplete="off"
-            noValidate
+            value={values.password || ""}
           ></input>
-          <span className="login__error-message"></span>
+          <span className="login__error-message"> {errors.password || ""}</span>
         </label>
-        <button className="login__signin" type="submit">
+        <button
+          className={`
+         login__signin-btn
+         ${!isValid && " login__signin-btn_disabled"}
+       `}
+          type="submit"
+          disabled={!isValid && true}
+        >
           Войти
         </button>
         <span className="login__signup">

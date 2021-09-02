@@ -112,6 +112,7 @@
 
 .movie__saveBtn:hover {
     opacity: 1;
+    cursor: pointer;
     
 }
 

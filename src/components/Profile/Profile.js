@@ -1,36 +1,33 @@
 import "./Profile.css";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 
 export default function Profile({ handleLogOut, onUpdateProfile }) {
   const currentUser = useContext(CurrentUserContext);
+  const { values, setValues, handleChange, errors, isValid } =
+    useFormWithValidation();
+  const { name, email } = values;
 
-  const [userData, setUserData] = React.useState({
-    name: currentUser.name,
-    email: currentUser.email,
-  });
-
-  const [isEdit, setIsEdit] = React.useState(false);
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
+  const handleSubmitUpdateProfile = (evt) => {
+    evt.preventDefault();
+    onUpdateProfile({ name, email });
   };
 
-  function handleEditInput() {
-    setIsEdit(true);
-  }
+  useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [setValues, currentUser]);
 
   return (
     <section className="profile">
-      <h2 className="profile__title">{`Привет, ${userData.name}!`}</h2>
+      <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
 
-      <form className="profile__form">
+      <form className="profile__form" onSubmit={handleSubmitUpdateProfile}>
         <label className="profile__label">
           Имя
           <input
@@ -38,12 +35,14 @@ export default function Profile({ handleLogOut, onUpdateProfile }) {
             name="name"
             type="name"
             className="profile__input"
-            value={userData.name}
-            onChange={handleChange}
-            disabled={!isEdit}
             required
+            minLength="2"
+            maxLength="30"
+            value={values.name || ""}
+            onChange={handleChange}
+            autoComplete="off"
           />
-          <span className="profile__error-message"></span>
+          <span className="profile__error-message"> {errors.name || ""}</span>
         </label>
 
         <label className="profile__label">
@@ -53,18 +52,22 @@ export default function Profile({ handleLogOut, onUpdateProfile }) {
             name="email"
             type="email"
             className="profile__input"
-            value={userData.email}
-            onChange={handleChange}
-            disabled={!isEdit}
             required
+            minLength="2"
+            maxLength="30"
+            value={values.email || ""}
+            onChange={handleChange}
+            autoComplete="off"
           ></input>
-          <span className="profile__error-message"></span>
+          <span className="profile__error-message"> {errors.email || ""}</span>
         </label>
 
         <button
-          className="profile__edit-button"
-          type="button"
-          onClick={handleEditInput}
+          type="submit"
+          disabled={!isValid && true}
+          className={`profile__edit-button ${
+            !isValid && "profile__edit-button_disabled"
+          }`}
         >
           Редактировать
         </button>

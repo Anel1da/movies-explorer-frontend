@@ -60,6 +60,7 @@
 
 .popup__close-btn:hover{
     opacity: 0.6; 
+    cursor: pointer;
 }
 
 .popup__links{
@@ -100,6 +101,7 @@
 .popup__link:hover {
     opacity: 0.6; 
     border-bottom: 2px solid #FFFFFF;
+    cursor: pointer;
 }
 
 .popup__link_active {
@@ -121,6 +123,7 @@
 
 .popup__profile:hover {
     opacity: 0.6; 
+    cursor: pointer;
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
@@ -142,5 +145,6 @@
 
 .popup__profile-btn:hover {
     opacity: 0.6; 
+    cursor: pointer;
 }
 
