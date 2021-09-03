@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Header from "../Header/Header";
+import Navigation from "../Navigation/Navigation";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 
@@ -11,6 +12,8 @@ export default function Profile({
   onUpdateProfile,
   loggedIn,
   onClick,
+  isOpen,
+  onClose,
 }) {
   const currentUser = useContext(CurrentUserContext);
   const { values, setValues, handleChange, errors, isValid } =
@@ -87,6 +90,7 @@ export default function Profile({
           </NavLink>
         </form>
       </section>
+      <Navigation isOpen={isOpen} onClose={onClose} />
     </>
   );
 }

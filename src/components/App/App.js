@@ -28,17 +28,32 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
 
-  const [loggedIn, setLoggedIn] = React.useState(null);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [infoToolTipMessage, setInfoToolTipMessage] = React.useState({
     icon: "",
     message: "",
   });
 
-  //хуки, получающие данные с сервера
-  useEffect(() => {
-    checkToken();
-  }, []);
+  // проверка статуса авторизации пользователя
+
+  const checkToken = () => {
+    auth
+      .getUser()
+      .then((user) => {
+        setLoggedIn(true);
+        setCurrentUser(user);
+      })
+      .catch((error) => {
+        handleInfoToolTipMessage({
+          icon: tooltipDeny,
+          message: "Пожалуйста авторизуйтесь для просмотра информации.",
+        });
+        handleInfoToolTipOpen(true);
+        history.push("/");
+        console.log(error);
+      });
+  };
 
   //обработчики событий
   const handleBurgerMenuClick = () => {
@@ -63,12 +78,7 @@ function App() {
     return auth
       .register({ name, email, password })
       .then((data) => {
-        handleInfoToolTipMessage({
-          icon: tooltipSuccess,
-          message: "Вы успешно зарегистрировались!",
-        });
-        handleInfoToolTipOpen(true);
-        history.push("/signin");
+        handleLogin({ email, password });
       })
       .catch((error) => {
         handleInfoToolTipMessage({
@@ -104,25 +114,6 @@ function App() {
       });
   };
 
-  // проверка статуса авторизации пользователя
-
-  const checkToken = () => {
-    auth
-      .getUser()
-      .then((user) => {
-        setLoggedIn(true);
-        setCurrentUser(user);
-      })
-      .catch((error) => {
-        handleInfoToolTipMessage({
-          icon: tooltipDeny,
-          message: "Пожалуйста авторизуйтесь для просмотра информации.",
-        });
-        handleInfoToolTipOpen(true);
-        console.log(error);
-      });
-  };
-
   //выход
 
   const handleLogOut = () => {
@@ -152,6 +143,23 @@ function App() {
       .catch((err) => console.log(err));
     /*    .finally(() => setIsLoading(false)); */
   };
+
+  //хуки, получающие данные с сервера
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      auth
+        .getUser()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch((err) => console.log(err));
+      history.push("/movies");
+    }
+  }, [history, loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
