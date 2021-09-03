@@ -10,6 +10,7 @@
     width: 100%;
     align-content: center;
     justify-content: center;
+    visibility: hidden;
 
 }
 
@@ -29,4 +30,20 @@
         padding: 40px 0 13px;
         max-width: 300px;
   }
+  }
+
+
+  .movies-list_visible {
+    visibility: visible;
+  }
+
+  .movies-list__noresult {
+    font-size: 30px;
+    text-align: center;
+    color: #FFFFFF;
+    grid-column: 1 / 3;
+  }
+
+  .movies-list__noresult_hidden {
+    display: none;
   }

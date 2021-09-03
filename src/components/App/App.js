@@ -169,6 +169,10 @@ function App() {
             <Header onClick={handleBurgerMenuClick} loggedIn={loggedIn} />
             <Main />
             <Footer />
+            <Navigation
+              isOpen={isNavigationPopupOpened}
+              onClose={closeAllPopups}
+            />
           </Route>
           <Route path="/signup">
             <Register onRegister={handleRegister} />

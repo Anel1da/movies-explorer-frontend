@@ -1,7 +1,7 @@
 import "./Header.css";
 import logo from "../../images/logo.svg";
 import profile from "../../images/profile.svg";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, NavLink, Route, Switch } from "react-router-dom";
 
 export default function Header({ onClick, loggedIn }) {
   return (
@@ -34,18 +34,20 @@ export default function Header({ onClick, loggedIn }) {
           {loggedIn ? (
             <>
               <div className="header__films">
-                <Link
+                <NavLink
                   to="/movies"
                   className="header__link header__link_profile"
+                  activeClassName="header__link_active"
                 >
                   Фильмы
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/saved-movies"
                   className="header__link header__link_profile"
+                  activeClassName="header__link_active"
                 >
                   Сохраненные фильмы
-                </Link>
+                </NavLink>
               </div>
               <Link to="/profile" className="header__link header__profile">
                 <p>Аккаунт</p>
@@ -55,6 +57,11 @@ export default function Header({ onClick, loggedIn }) {
                   className="header__profile-btn"
                 />
               </Link>
+              <button
+                type="button"
+                className="header__btn-menu"
+                onClick={onClick}
+              ></button>
             </>
           ) : (
             ""
@@ -68,20 +75,29 @@ export default function Header({ onClick, loggedIn }) {
             <img src={logo} className="header__logo" alt="Логотип" />
           </Link>
           <div className="header__films">
-            <Link to="/movies" className="header__link header__link_profile">
+            <NavLink
+              to="/movies"
+              className="header__link header__link_profile"
+              activeClassName="header__link_active"
+            >
               Фильмы
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/saved-movies"
               className="header__link header__link_profile"
+              activeClassName="header__link_active"
             >
               Сохраненные фильмы
-            </Link>
+            </NavLink>
           </div>
-          <Link to="/profile" className="header__link header__profile">
+          <NavLink
+            to="/profile"
+            className="header__link header__profile"
+            activeClassName="header__link_active"
+          >
             <p>Аккаунт</p>
             <img src={profile} alt="Аккаунт" className="header__profile-btn" />
-          </Link>
+          </NavLink>
           <button
             type="button"
             className="header__btn-menu"
@@ -96,20 +112,29 @@ export default function Header({ onClick, loggedIn }) {
             <img src={logo} className="header__logo" alt="Логотип" />
           </Link>
           <div className="header__films">
-            <Link to="/movies" className="header__link header__link_profile">
+            <NavLink
+              to="/movies"
+              className="header__link header__link_profile"
+              activeClassName="header__link_active"
+            >
               Фильмы
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/saved-movies"
               className="header__link header__link_profile"
+              activeClassName="header__link_active"
             >
               Сохраненные фильмы
-            </Link>
+            </NavLink>
           </div>
-          <Link to="/profile" className="header__link header__profile">
+          <NavLink
+            to="/profile"
+            className="header__link header__profile"
+            activeClassName="header__link_active"
+          >
             <p>Аккаунт</p>
             <img src={profile} alt="Аккаунт" className="header__profile-btn" />
-          </Link>
+          </NavLink>
           <button
             type="button"
             className="header__btn-menu"
@@ -134,10 +159,14 @@ export default function Header({ onClick, loggedIn }) {
               Сохраненные фильмы
             </Link>
           </div>
-          <Link to="/profile" className="header__link header__profile">
+          <NavLink
+            to="/profile"
+            className="header__link header__profile"
+            activeClassName="header__link_active"
+          >
             <p>Аккаунт</p>
             <img src={profile} alt="Аккаунт" className="header__profile-btn" />
-          </Link>
+          </NavLink>
           <button
             type="button"
             className="header__btn-menu"

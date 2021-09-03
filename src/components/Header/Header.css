@@ -105,6 +105,10 @@
     cursor: pointer;
   }
 
+  .header__link_active {
+    border-bottom: 2px solid #FFFFFF;
+  }
+
 
   .header__login-btn {
     background-color: #3DDC84;
