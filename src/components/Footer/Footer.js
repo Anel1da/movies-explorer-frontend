@@ -10,25 +10,13 @@ export default function Footer() {
       <div className="footer__container">
         <p className="footer__date">&copy; 2021</p>
         <div className="footer__links">
-          <Link
-            href="#"
-            className="footer__link"
-            target="_blank"
-          >
+          <Link href="#" className="footer__link" target="_blank">
             Яндекс.Практикум
           </Link>
-          <Link
-            href="#"
-            className="footer__link"
-            target="_blank"
-          >
+          <Link href="#" className="footer__link" target="_blank">
             Github
           </Link>
-          <Link
-            href="#"
-            className="footer__link"
-            target="_blank"
-          >
+          <Link href="#" className="footer__link" target="_blank">
             Facebook
           </Link>
         </div>

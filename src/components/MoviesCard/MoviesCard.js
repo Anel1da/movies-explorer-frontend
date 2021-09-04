@@ -9,7 +9,7 @@ export default function MoviesCard({
   movieDuration,
   movieTrailer,
   movieImage,
-  /*   savedMovies,
+  /* savedMovies,
   addMovieToFavorites,
   removeMovieFromFavorites */
 }) {

@@ -18,6 +18,7 @@ import { InfoTooltip } from "../InfoTooltip/InfoTooltip";
 import tooltipSuccess from "./../../images/tooltip-success.svg";
 import tooltipDeny from "./../../images/tooltip-deny.svg";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import Preloader from "../Preloader/Preloader";
 
 function App() {
   const history = useHistory();
@@ -34,6 +35,8 @@ function App() {
     icon: "",
     message: "",
   });
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   // проверка статуса авторизации пользователя
 
@@ -75,6 +78,7 @@ function App() {
 
   //Регистрация пользователя
   const handleRegister = ({ name, email, password }) => {
+    setIsLoading(true);
     return auth
       .register({ name, email, password })
       .then((data) => {
@@ -87,11 +91,13 @@ function App() {
         });
         handleInfoToolTipOpen(true);
         console.log(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   //авторизация пользователя
   const handleLogin = ({ email, password }) => {
+    setIsLoading(true);
     return auth
       .authorize({ email, password })
       .then((res) => {
@@ -111,7 +117,8 @@ function App() {
         });
         handleInfoToolTipOpen(true);
         console.log(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   //выход
@@ -122,6 +129,7 @@ function App() {
       .then(() => {
         setLoggedIn(false);
         setCurrentUser({});
+        localStorage.clear();
         history.push("/");
       })
       .catch((error) => {
@@ -136,12 +144,13 @@ function App() {
 
   // обработчик редактирования профиля
   const handleUpdateProfile = (newData) => {
+    setIsLoading(true);
     MainApi.updateProfile(newData)
       .then((user) => {
         setCurrentUser(user);
       })
-      .catch((err) => console.log(err));
-    /*    .finally(() => setIsLoading(false)); */
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
   };
 
   //хуки, получающие данные с сервера
@@ -215,6 +224,7 @@ function App() {
           onClose={closeAllPopups}
           infoToolTipMessage={infoToolTipMessage}
         />
+        <Preloader isLoading={isLoading} />
       </div>
     </CurrentUserContext.Provider>
   );

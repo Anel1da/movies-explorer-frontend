@@ -19,6 +19,7 @@
     border-radius: 6px;
     transition: all .5s ease;
     margin: 50px auto 80px;
+    visibility: hidden;
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
@@ -33,6 +34,6 @@
   
 }
 
-.more__btn_hidden {
-    display: none;
-  }
+.more__btn_active {
+    visibility: visible;
+}

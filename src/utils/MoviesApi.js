@@ -1,4 +1,4 @@
-export const BASE_URL_MOVIE = "https://api.nomoreparties.co";
+import { BASE_URL_MOVIE } from "./utils";
 
 export const getMovies = () => {
   return fetch(`${BASE_URL_MOVIE}/beatfilm-movies`, {

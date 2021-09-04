@@ -9,65 +9,65 @@ import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader";
 import * as moviesApi from "../../utils/MoviesApi";
+import {
+  NOT_FOUND_ERR,
+  FAILED_TO_FETCH_ERR,
+  SEARCH_VALUE_MISSING,
+} from "../../utils/utils";
 
 export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
-  const SHORT_MOVIE_DURATION = 40;
   const { pathname } = useLocation();
-  const [renderedMoviesList, setRenderedMoviesList] = useState([]);
-  const [foundMovies, setFoundMovies] = useState([]);
-  const [moviesCount, setMoviesCount] = useState({
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadMoreBtnVisibility, setLoadMoreBtnVisibility] = useState(false);
+  const [moviesError, setMoviesError] = useState("");
+  const [foundMovies, setFoundMovies] = useState([]); //все найденные по запросу фильмы
+  const [localSearchedMovies, setLocalSearchedMovie] = useState(
+    JSON.parse(localStorage.getItem("movies")) //фильмы сохраненные в локальном хранилище при первом поиске
+  );
+  const [numberOfCards, setNumberOfCards] = useState({
     startCards: 0,
-    rowCards: 0,
+    rowCards: 0, //число карточек для отрисовки
     moreCards: 0,
   });
-  const [isShortMovies, setIsShortMovies] = useState(false);
-  const [searchInputError, setSearchInputError] = useState("");
-  const [moviesVisible, setMoviesVisible] = useState("");
-  const [moreButtonVisible, setMoreButtonVisible] =
-    useState("more__btn_hidden");
 
-  const shortMovies = (movies) => {
-    return movies.filter((movie) => movie.duration <= SHORT_MOVIE_DURATION);
-  };
-  const filterShortMovies = (movies) => {
-    if (isShortMovies) {
-      return shortMovies(movies);
-    }
-    return movies.filter((movie) => movie.duration >= SHORT_MOVIE_DURATION);
-  };
-
-  function handleShortMovies() {
-    setIsShortMovies(!isShortMovies);
-  }
-
-  const processedMovies = useMemo(
-    () => filterShortMovies(foundMovies),
-    [isShortMovies, foundMovies]
-  );
-  const processedRenderedMovies = useMemo(
-    () => filterShortMovies(renderedMoviesList),
-    [isShortMovies, renderedMoviesList]
-  );
+  // ограничение числа карточек на странице
+  useEffect(() => {
+    limitNumberOfCards();
+  }, []);
 
   useEffect(() => {
-    if (processedMovies.length <= processedRenderedMovies.length) {
-      setMoreButtonVisible("more__btn_hidden");
-    }
-  }, [processedMovies, processedRenderedMovies]);
+    loadMoreBtnVisible();
+  }, [foundMovies, numberOfCards]);
 
-  // отображение кольичества карточек на странице
-  function renderCardsCount() {
+  function limitNumberOfCards() {
     const viewportWidth = window.screen.width;
     if (viewportWidth < 767) {
-      setMoviesCount({ startCards: 5, rowCards: 1, moreCards: 2 });
+      setNumberOfCards({ startCards: 5, rowCards: 1, moreCards: 2 });
     } else if (viewportWidth < 1200) {
-      setMoviesCount({ startCards: 8, rowCards: 2, moreCards: 2 });
+      setNumberOfCards({ startCards: 8, rowCards: 2, moreCards: 2 });
     } else {
-      setMoviesCount({ startCards: 16, rowCards: 4, moreCards: 4 });
+      setNumberOfCards({ startCards: 12, rowCards: 3, moreCards: 3 });
     }
   }
 
-  // фильтрацтя по ключевому слову
+  // кнопка Еще
+
+  const loadMoreBtnHandler = () => {
+    return setNumberOfCards({
+      ...numberOfCards,
+      startCards: numberOfCards.startCards + numberOfCards.moreCards,
+    });
+  };
+
+  function loadMoreBtnVisible() {
+    if (foundMovies.length > numberOfCards.startCards) {
+      setLoadMoreBtnVisibility(true);
+    } else {
+      setLoadMoreBtnVisibility(false);
+    }
+  }
+
+  // поиск по ключевому слову с проверкой длины массива
   const filterMoviesByKeyword = (movies, query) => {
     const filteredMovies = movies.filter((movie) =>
       movie.nameRU.toLowerCase().includes(query.toLowerCase())
@@ -76,65 +76,71 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       localStorage.setItem("foundMovies", JSON.stringify(filteredMovies));
       return filteredMovies;
     });
+    checkArray(filteredMovies);
   };
 
-  //загрузка фильмов с сервера BeatFilm
-  const searchMovieHandler = (query) => {
-    if (query === "") return setSearchInputError("Введите ключевое слово");
-    setMoviesVisible("");
+  //проверка длины массива
+  function checkArray(foundMovies) {
+    if (foundMovies.length === 0) {
+      setMoviesError(NOT_FOUND_ERR);
+    } else {
+      setMoviesError("");
+    }
+  }
 
+  //поиск фильмов
+  const searchMovieHandler = (query) => {
     if (pathname === "/movies") {
       if (!localStorage.getItem("movies")) {
+        setIsLoading(true);
         moviesApi
           .getMovies()
           .then((movies) => {
             localStorage.setItem("movies", JSON.stringify(movies));
             filterMoviesByKeyword(JSON.parse(localStorage.movies), query);
-            setMoviesVisible("movies-list_visible");
-            setMoreButtonVisible("");
-          })
-          .catch((err) => console.log(err));
-        return;
-      }
 
-      filterMoviesByKeyword(
-        localStorage.getItem("movies") ? JSON.parse(localStorage.movies) : [],
-        query
-      );
-      setMoviesVisible("movies-list_visible");
-      setMoreButtonVisible("");
-    } /* else {
-      setSavedMovies(
-        savedMovies.filter((movie) =>
-          movie.nameRU.toLowerCase().includes(query.toLowerCase())
-        )
-      );
-      setMoviesVisibility("movies-card-list_visible");
-    } */
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log("Ошибка: ", err);
+            setMoviesError(FAILED_TO_FETCH_ERR);
+          })
+          .finally(() => setIsLoading(false));
+        return;
+      } else {
+        filterMoviesByKeyword(
+          localStorage.getItem("movies") ? JSON.parse(localStorage.movies) : [],
+          query
+        );
+      }
+    } /*else {
+       поиск по сохраненным фильмам 
+    }*/
   };
+
+  //отслеживание изменение ширины экрана
+  window.addEventListener("resize", function () {
+    setTimeout(() => {
+      limitNumberOfCards();
+    }, 250);
+  });
 
   return (
     <>
       <Header onClick={onClick} />
       <div className="movies">
-        <Searchform
-          setSearchInputError={setSearchInputError}
-          onSubmit={searchMovieHandler}
-          setIsShortMovies={handleShortMovies}
-        />
-        <MoviesCardList
-          movies={processedMovies}
-          renderedMoviesList={processedRenderedMovies}
-          setRenderedMoviesList={setRenderedMoviesList}
-          moviesVisible={moviesVisible}
-          setMoviesVisible={setMoviesVisible}
-          moreButtonVisible={moreButtonVisible}
-          setMoreButtonVisible={setMoreButtonVisible}
-          loggedIn={loggedIn}
-          setMoviesCount={setMoviesCount}
-          moviesCount={moviesCount}
-          countInitialCards={renderCardsCount}
-        />
+        <Searchform onSubmit={searchMovieHandler} />
+        {isLoading ? (
+          <Preloader />
+        ) : (
+          <MoviesCardList
+            movies={foundMovies}
+            initalNumberOfCards={numberOfCards.startCards}
+            {...{ moviesError }}
+            loadMoreBtnHandler={loadMoreBtnHandler}
+            loadMoreBtnVisibility={loadMoreBtnVisibility}
+          />
+        )}
         <Navigation isOpen={isOpen} onClose={onClose} />
       </div>
       <Footer />
