@@ -9,11 +9,13 @@ export default function MoviesCard({
   movieDuration,
   movieTrailer,
   movieImage,
-  /* savedMovies,
-  addMovieToFavorites,
-  removeMovieFromFavorites */
+  handleSaveBtnClick,
 }) {
   const { pathname } = useLocation();
+
+  function handleClick(movie) {
+    handleSaveBtnClick(movie);
+  }
 
   return (
     <>
@@ -31,7 +33,11 @@ export default function MoviesCard({
             <h3 className="movie__title">{movieTitle}</h3>
             <p className="movie__duration">{movieDuration}</p>
           </div>
-          <button type="button" className="movie__saveBtn"></button>
+          <button
+            type="button"
+            className="movie__saveBtn"
+            onClick={() => handleClick(movie)}
+          ></button>
         </div>
       </div>
     </>

@@ -12,6 +12,7 @@ export default function MoviesCardList({
   moviesError,
   loadMoreBtnHandler,
   loadMoreBtnVisibility,
+  handleSaveBtnClick,
 }) {
   return (
     <>
@@ -31,6 +32,7 @@ export default function MoviesCardList({
                   ? `https://api.nomoreparties.co${movie.image.url}`
                   : "https://imgur.com/j6h8g1O"
               }
+              handleSaveBtnClick={handleSaveBtnClick}
             />
           ))}
         </section>

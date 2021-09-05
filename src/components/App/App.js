@@ -22,13 +22,9 @@ import Preloader from "../Preloader/Preloader";
 
 function App() {
   const history = useHistory();
-
-  //стейт переменные
+  const [currentUser, setCurrentUser] = React.useState({});
   const [isNavigationPopupOpened, setIsNavigationPopupOpened] =
     React.useState(false);
-
-  const [currentUser, setCurrentUser] = React.useState({});
-
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [infoToolTipMessage, setInfoToolTipMessage] = React.useState({
