@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { React, useState } from "react";
+import { React } from "react";
 import "./Register.css";
-/* import Preloader from "../Preloader/Preloader"; */
 import logo from "../../images/logo.svg";
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 

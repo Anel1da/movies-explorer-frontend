@@ -1,5 +1,5 @@
-import { React, useContext, useEffect, useState } from "react";
-import { useLocation, Route } from "react-router-dom";
+import { React, useContext, useEffect, useState, useMemo } from "react";
+import { useLocation, Route, Switch } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Movies.css";
 import Header from "../Header/Header";
@@ -16,6 +16,7 @@ import {
   NOT_FOUND_ERR,
   FAILED_TO_FETCH_ERR,
   SEARCH_VALUE_MISSING,
+  SHORT_FILM_DURATION,
 } from "../../utils/utils";
 
 export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
@@ -26,6 +27,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   const [moviesError, setMoviesError] = useState("");
   const [foundMovies, setFoundMovies] = useState([]); //все найденные по запросу фильмы
   const [savedMovies, setSavedMovies] = useState([]); // фильмы, добавленные в сохраненные
+  const [isShortMovies, setIsShortMovies] = useState(false);
 
   const [numberOfCards, setNumberOfCards] = useState({
     //количество карточек для отрисовки
@@ -34,10 +36,14 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     moreCards: 0,
   });
 
-  // ограничение числа карточек на странице
+  // при загрузке страницы
+
   useEffect(() => {
     limitNumberOfCards();
     loadSavedMovies();
+    if (localStorage.getItem("savedMovies") !== null) {
+      setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
+    }
   }, []);
 
   useEffect(() => {
@@ -103,7 +109,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
           .then((movies) => {
             localStorage.setItem("movies", JSON.stringify(movies));
             filterMoviesByKeyword(JSON.parse(localStorage.movies), query);
-
             setIsLoading(false);
           })
           .catch((err) => {
@@ -118,12 +123,15 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
           query
         );
       }
-    } /*else {
-       поиск по сохраненным фильмам 
-    }*/
+    } else {
+      setSavedMovies(
+        savedMovies.filter((movie) =>
+          movie.nameRU.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }
   };
 
-  //
   //загрузить сохраненные пользователем фильмы
   const loadSavedMovies = () => {
     return mainApi
@@ -202,6 +210,27 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     }
   }
 
+  // чекбокс
+  const filterShortMovies = (movies) => {
+    if (isShortMovies) {
+      return movies.filter((movie) => movie.duration <= SHORT_FILM_DURATION);
+    }
+    return movies.filter((movie) => movie.duration >= SHORT_FILM_DURATION);
+  };
+
+  function handleShortMovies() {
+    setIsShortMovies(!isShortMovies);
+  }
+
+  const moviesforShow = useMemo(
+    () => filterShortMovies(foundMovies),
+    [isShortMovies, foundMovies]
+  );
+
+  const savedMoviesforShow = useMemo(
+    () => filterShortMovies(savedMovies),
+    [isShortMovies, savedMovies]
+  );
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
     setTimeout(() => {
@@ -213,35 +242,40 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     <>
       <Header onClick={onClick} />
       <div className="movies">
-        <Searchform onSubmit={searchMovieHandler} />
-        <Route path="/movies">
-          {isLoading ? (
-            <Preloader />
-          ) : (
-            <MoviesCardList
-              movies={foundMovies}
-              initalNumberOfCards={numberOfCards.startCards}
-              {...{ moviesError }}
-              loadMoreBtnHandler={loadMoreBtnHandler}
-              loadMoreBtnVisibility={loadMoreBtnVisibility}
-              handleSaveBtnClick={handleSaveBtnClick}
-              savedMovies={savedMovies}
-            />
-          )}
-        </Route>
-        <Route path="/saved-movies">
-          {isLoading ? (
-            <Preloader />
-          ) : (
-            <SavedMovies
-              initalNumberOfCards={numberOfCards.startCards}
-              {...{ moviesError }}
-              handleSaveBtnClick={handleSaveBtnClick}
-              savedMovies={savedMovies}
-            />
-          )}
-        </Route>
-
+        <Searchform
+          onSubmit={searchMovieHandler}
+          isShortMovies={isShortMovies}
+          setIsShortMovies={handleShortMovies}
+        />
+        <Switch>
+          <Route path="/movies">
+            {isLoading ? (
+              <Preloader />
+            ) : (
+              <MoviesCardList
+                movies={moviesforShow}
+                initalNumberOfCards={numberOfCards.startCards}
+                {...{ moviesError }}
+                loadMoreBtnHandler={loadMoreBtnHandler}
+                loadMoreBtnVisibility={loadMoreBtnVisibility}
+                handleSaveBtnClick={handleSaveBtnClick}
+                savedMovies={savedMovies}
+              />
+            )}
+          </Route>
+          <Route path="/saved-movies">
+            {isLoading ? (
+              <Preloader />
+            ) : (
+              <SavedMovies
+                initalNumberOfCards={numberOfCards.startCards}
+                {...{ moviesError }}
+                handleSaveBtnClick={handleSaveBtnClick}
+                savedMovies={savedMoviesforShow}
+              />
+            )}
+          </Route>
+        </Switch>
         <Navigation isOpen={isOpen} onClose={onClose} />
       </div>
       <Footer />

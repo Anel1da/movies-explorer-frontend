@@ -14,7 +14,7 @@ export default function MoviesCardList({
   handleSaveBtnClick,
   savedMovies,
 }) {
-  const { pathname } = useLocation();
+
   return (
     <>
       {moviesError !== "" ? (

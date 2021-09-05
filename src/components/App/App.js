@@ -6,7 +6,6 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
-import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
@@ -163,7 +162,6 @@ function App() {
           setCurrentUser(user);
         })
         .catch((err) => console.log(err));
-      history.push("/movies");
     }
   }, [history, loggedIn]);
 

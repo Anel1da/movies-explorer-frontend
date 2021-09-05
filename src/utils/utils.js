@@ -6,4 +6,4 @@ export const FAILED_TO_FETCH_ERR =
   "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
 export const SEARCH_VALUE_MISSING = "Введите ключевое слово";
 
-export const SHORT_FILM_DURATION = 60;
+export const SHORT_FILM_DURATION = 40;

@@ -4,20 +4,25 @@ import searchIcon from "../../images/search-icon.svg";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-export default function Searchform({ onSubmit }) {
+export default function Searchform({
+  onSubmit,
+  isShortMovies,
+  setIsShortMovies,
+}) {
   const inputElement = useRef(null);
 
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
     onSubmit(inputElement.current.value);
   };
+
   return (
     <section className="search-form">
       <form className="search-form__form" onSubmit={handleFormSubmit}>
         <div className="search-form__container">
           <img className="search__form-icon" src={searchIcon} alt="Поиск" />
           <input
-            type="text"
+            type="search"
             className="search-form__input"
             placeholder="Фильм"
             required
@@ -28,7 +33,10 @@ export default function Searchform({ onSubmit }) {
           </button>
         </div>
       </form>
-      <FilterCheckbox />
+      <FilterCheckbox
+        isShortMovies={isShortMovies}
+        setIsShortMovies={setIsShortMovies}
+      />
     </section>
   );
 }

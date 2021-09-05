@@ -4,7 +4,6 @@ import calculateMovieDuration from "../../utils/calculateMoviesDuration";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 export default function MoviesCardList({
-  initalNumberOfCards,
   moviesError,
   handleSaveBtnClick,
   savedMovies,
@@ -15,7 +14,7 @@ export default function MoviesCardList({
         <p className={`savedmovies-list__noresult`}>{moviesError}</p>
       ) : (
         <section className={`savedmovies-list`}>
-          {savedMovies.slice(0, initalNumberOfCards).map((savedMovie) => (
+          {savedMovies.map((savedMovie) => (
             <MoviesCard
               movie={savedMovie}
               key={savedMovie.movieId}
