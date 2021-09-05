@@ -15,7 +15,8 @@ import * as mainApi from "../../utils/MainApi";
 import {
   NOT_FOUND_ERR,
   FAILED_TO_FETCH_ERR,
-  SEARCH_VALUE_MISSING,
+  TABLET_VERSION,
+  MOBILE_VERSION,
   SHORT_FILM_DURATION,
 } from "../../utils/utils";
 
@@ -52,9 +53,9 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
 
   function limitNumberOfCards() {
     const viewportWidth = window.screen.width;
-    if (viewportWidth < 767) {
+    if (viewportWidth < MOBILE_VERSION) {
       setNumberOfCards({ startCards: 5, rowCards: 1, moreCards: 2 });
-    } else if (viewportWidth < 1200) {
+    } else if (viewportWidth < TABLET_VERSION) {
       setNumberOfCards({ startCards: 8, rowCards: 2, moreCards: 2 });
     } else {
       setNumberOfCards({ startCards: 12, rowCards: 3, moreCards: 3 });
@@ -232,7 +233,8 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     [isShortMovies, savedMovies]
   );
 
-
+  /*  setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
+   */
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
     setTimeout(() => {

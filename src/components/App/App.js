@@ -34,6 +34,22 @@ function App() {
 
   const [isLoading, setIsLoading] = React.useState(false);
 
+  //хуки, получающие данные с сервера
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      auth
+        .getUser()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [history, loggedIn]);
+
   // проверка статуса авторизации пользователя
 
   const checkToken = () => {
@@ -120,6 +136,7 @@ function App() {
   //выход
 
   const handleLogOut = () => {
+    setIsLoading(true);
     return auth
       .logout()
       .then(() => {
@@ -135,7 +152,8 @@ function App() {
         });
         handleInfoToolTipOpen(true);
         console.log(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   // обработчик редактирования профиля
@@ -144,26 +162,23 @@ function App() {
     MainApi.updateProfile(newData)
       .then((user) => {
         setCurrentUser(user);
+        handleInfoToolTipMessage({
+          icon: tooltipSuccess,
+          message: "Информация обновлена!",
+        });
+        handleInfoToolTipOpen(true);
       })
-      .catch((err) => console.log(err))
+      .catch((error) => {
+        handleInfoToolTipMessage({
+          icon: tooltipDeny,
+          message:
+            "Ошибка при редактировании профиля. Проверьте правильность заполнения данных.",
+        });
+        handleInfoToolTipOpen(true);
+        console.log(error);
+      })
       .finally(() => setIsLoading(false));
   };
-
-  //хуки, получающие данные с сервера
-  useEffect(() => {
-    checkToken();
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
-      auth
-        .getUser()
-        .then((user) => {
-          setCurrentUser(user);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [history, loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

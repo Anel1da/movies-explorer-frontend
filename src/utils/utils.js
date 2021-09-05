@@ -7,3 +7,7 @@ export const FAILED_TO_FETCH_ERR =
 export const SEARCH_VALUE_MISSING = "Введите ключевое слово";
 
 export const SHORT_FILM_DURATION = 40;
+
+export const DESKTOP_VERSION = 1280;
+export const TABLET_VERSION = 1200;
+export const MOBILE_VERSION = 767;
