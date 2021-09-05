@@ -1,7 +1,7 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
-import film from "../../images/film.svg";
 
 export default function MoviesCard({
   movie,
@@ -10,8 +10,18 @@ export default function MoviesCard({
   movieTrailer,
   movieImage,
   handleSaveBtnClick,
+  savedMovies,
 }) {
   const { pathname } = useLocation();
+  const [isSaved, setIsSaved] = useState("");
+
+  useEffect(() => {
+    if (savedMovies.some((item) => item.movieId === movie.id)) {
+      setIsSaved(true);
+    } else {
+      setIsSaved(false);
+    }
+  }, savedMovies);
 
   function handleClick(movie) {
     handleSaveBtnClick(movie);
@@ -33,11 +43,20 @@ export default function MoviesCard({
             <h3 className="movie__title">{movieTitle}</h3>
             <p className="movie__duration">{movieDuration}</p>
           </div>
-          <button
-            type="button"
-            className="movie__saveBtn"
-            onClick={() => handleClick(movie)}
-          ></button>
+          {pathname === "/movies" ? (
+            <button
+              type="button"
+              /*   className="movie__saveBtn movie__saveBtn_saved" */
+              className={`movie__saveBtn  ${isSaved && "movie__saveBtn_saved"}`}
+              onClick={() => handleClick(movie)}
+            ></button>
+          ) : (
+            <button
+              type="button"
+              className="movie__saveBtn"
+              onClick={() => handleClick(movie)}
+            ></button>
+          )}
         </div>
       </div>
     </>

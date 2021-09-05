@@ -13,6 +13,7 @@ export default function MoviesCardList({
   loadMoreBtnHandler,
   loadMoreBtnVisibility,
   handleSaveBtnClick,
+  savedMovies,
 }) {
   return (
     <>
@@ -33,6 +34,7 @@ export default function MoviesCardList({
                   : "https://imgur.com/j6h8g1O"
               }
               handleSaveBtnClick={handleSaveBtnClick}
+              savedMovies={savedMovies}
             />
           ))}
         </section>

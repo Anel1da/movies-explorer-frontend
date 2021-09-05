@@ -1,7 +1,6 @@
-import { React, useContext } from "react";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { React, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Movies.css";
 import Header from "../Header/Header";
 import Searchform from "../SearchForm/SearchForm";
@@ -25,9 +24,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   const [loadMoreBtnVisibility, setLoadMoreBtnVisibility] = useState(false);
   const [moviesError, setMoviesError] = useState("");
   const [foundMovies, setFoundMovies] = useState([]); //все найденные по запросу фильмы
-  const [localSearchedMovies, setLocalSearchedMovie] = useState(
-    JSON.parse(localStorage.getItem("movies")) //фильмы сохраненные в локальном хранилище при первом поиске
-  );
   const [savedMovies, setSavedMovies] = useState([]); // фильмы, добавленные в сохраненные
 
   const [numberOfCards, setNumberOfCards] = useState({
@@ -219,6 +215,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
             loadMoreBtnHandler={loadMoreBtnHandler}
             loadMoreBtnVisibility={loadMoreBtnVisibility}
             handleSaveBtnClick={handleSaveBtnClick}
+            savedMovies={savedMovies}
           />
         )}
         <Navigation isOpen={isOpen} onClose={onClose} />
