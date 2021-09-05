@@ -1,71 +1,34 @@
 import React from "react";
 import "./SavedMovies.css";
-import film from "../../images/film.svg";
+import calculateMovieDuration from "../../utils/calculateMoviesDuration";
+import MoviesCard from "../MoviesCard/MoviesCard";
 
-export default function MoviesCard() {
+export default function MoviesCardList({
+  initalNumberOfCards,
+  moviesError,
+  handleSaveBtnClick,
+  savedMovies,
+}) {
   return (
     <>
-      <div className="movie">
-        <div className="movie__container">
-          <img className="movie__image" src={film} alt="заставка фильма" />
-          <div className="movie__info">
-            <h3 className="movie__title">
-              Gimme Danger: История Игги и The Stooges
-            </h3>
-            <p className="movie__duration">1ч 17м</p>
-          </div>
-          <button
-            type="button"
-            className="movie__saveBtn movie__saveBtn_remove"
-          ></button>
-        </div>
-      </div>
-
-      <div className="movie">
-        <div className="movie__container">
-          <img className="movie__image" src={film} alt="заставка фильма" />
-          <div className="movie__info">
-            <h3 className="movie__title">
-              Gimme Danger: История Игги и The Stooges
-            </h3>
-            <p className="movie__duration">1ч 17м</p>
-          </div>
-          <button
-            type="button"
-            className="movie__saveBtn movie__saveBtn_remove"
-          ></button>
-        </div>
-      </div>
-      <div className="movie">
-        <div className="movie__container">
-          <img className="movie__image" src={film} alt="заставка фильма" />
-          <div className="movie__info">
-            <h3 className="movie__title">
-              Gimme Danger: История Игги и The Stooges
-            </h3>
-            <p className="movie__duration">1ч 17м</p>
-          </div>
-          <button
-            type="button"
-            className="movie__saveBtn movie__saveBtn_remove"
-          ></button>
-        </div>
-      </div>
-      <div className="movie">
-        <div className="movie__container">
-          <img className="movie__image" src={film} alt="заставка фильма" />
-          <div className="movie__info">
-            <h3 className="movie__title">
-              Gimme Danger: История Игги и The Stooges
-            </h3>
-            <p className="movie__duration">1ч 17м</p>
-          </div>
-          <button
-            type="button"
-            className="movie__saveBtn movie__saveBtn_remove"
-          ></button>
-        </div>
-      </div>
+      {moviesError !== "" ? (
+        <p className={`savedmovies-list__noresult`}>{moviesError}</p>
+      ) : (
+        <section className={`savedmovies-list`}>
+          {savedMovies.slice(0, initalNumberOfCards).map((savedMovie) => (
+            <MoviesCard
+              movie={savedMovie}
+              key={savedMovie.movieId}
+              movieTitle={savedMovie.nameRU}
+              movieDuration={calculateMovieDuration(savedMovie.duration)}
+              movieTrailer={savedMovie.trailer}
+              movieImage={savedMovie.image}
+              handleSaveBtnClick={handleSaveBtnClick}
+              savedMovies={savedMovies}
+            />
+          ))}
+        </section>
+      )}
     </>
   );
 }

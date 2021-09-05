@@ -1,5 +1,5 @@
 import { React, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Route } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Movies.css";
 import Header from "../Header/Header";
@@ -7,6 +7,7 @@ import Searchform from "../SearchForm/SearchForm";
 import Navigation from "../Navigation/Navigation";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import SavedMovies from "../SavedMovies/SavedMovies";
 import Preloader from "../Preloader/Preloader";
 import * as moviesApi from "../../utils/MoviesApi";
 import * as mainApi from "../../utils/MainApi";
@@ -166,33 +167,41 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   };
 
   function handleSaveBtnClick(movie) {
-    if (!savedMovies.some((item) => item.movieId === movie.id)) {
-      saveMovie({
-        country: movie.country ? movie.country : "Страна не указана",
-        director: movie.director ? movie.director : "Режиссёр не указан",
-        duration: movie.duration,
-        year: movie.year ? movie.year : "Год не указан",
-        description: movie.description
-          ? movie.description
-          : "Описание фильма отсутствует",
-        image: `https://api.nomoreparties.co${movie.image.url}`,
-        trailer: movie.trailerLink ? movie.trailerLink : "https://youtube.ru",
-        thumbnail: movie.image.formats.thumbnail.url
-          ? `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`
-          : "Параметр не указан",
-        movieId: movie.id,
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN
-          ? movie.nameEN
-          : "Англоязычное название не указано",
-      });
+    if (pathname === "/movies") {
+      if (!savedMovies.some((item) => item.movieId === movie.id)) {
+        saveMovie({
+          country: movie.country ? movie.country : "Страна не указана",
+          director: movie.director ? movie.director : "Режиссёр не указан",
+          duration: movie.duration,
+          year: movie.year ? movie.year : "Год не указан",
+          description: movie.description
+            ? movie.description
+            : "Описание фильма отсутствует",
+          image: `https://api.nomoreparties.co${movie.image.url}`,
+          trailer: movie.trailerLink ? movie.trailerLink : "https://youtube.ru",
+          thumbnail: movie.image.formats.thumbnail.url
+            ? `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`
+            : "Параметр не указан",
+          movieId: movie.id,
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN
+            ? movie.nameEN
+            : "Англоязычное название не указано",
+        });
+      } else {
+        const movieForDelete = savedMovies.find(
+          (item) => item.movieId === movie.id
+        );
+        deleteMovie(movieForDelete);
+      }
     } else {
       const movieForDelete = savedMovies.find(
-        (item) => item.movieId === movie.id
+        (item) => item.movieId === movie.movieId
       );
       deleteMovie(movieForDelete);
     }
   }
+
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
     setTimeout(() => {
@@ -205,19 +214,34 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       <Header onClick={onClick} />
       <div className="movies">
         <Searchform onSubmit={searchMovieHandler} />
-        {isLoading ? (
-          <Preloader />
-        ) : (
-          <MoviesCardList
-            movies={foundMovies}
-            initalNumberOfCards={numberOfCards.startCards}
-            {...{ moviesError }}
-            loadMoreBtnHandler={loadMoreBtnHandler}
-            loadMoreBtnVisibility={loadMoreBtnVisibility}
-            handleSaveBtnClick={handleSaveBtnClick}
-            savedMovies={savedMovies}
-          />
-        )}
+        <Route path="/movies">
+          {isLoading ? (
+            <Preloader />
+          ) : (
+            <MoviesCardList
+              movies={foundMovies}
+              initalNumberOfCards={numberOfCards.startCards}
+              {...{ moviesError }}
+              loadMoreBtnHandler={loadMoreBtnHandler}
+              loadMoreBtnVisibility={loadMoreBtnVisibility}
+              handleSaveBtnClick={handleSaveBtnClick}
+              savedMovies={savedMovies}
+            />
+          )}
+        </Route>
+        <Route path="/saved-movies">
+          {isLoading ? (
+            <Preloader />
+          ) : (
+            <SavedMovies
+              initalNumberOfCards={numberOfCards.startCards}
+              {...{ moviesError }}
+              handleSaveBtnClick={handleSaveBtnClick}
+              savedMovies={savedMovies}
+            />
+          )}
+        </Route>
+
         <Navigation isOpen={isOpen} onClose={onClose} />
       </div>
       <Footer />

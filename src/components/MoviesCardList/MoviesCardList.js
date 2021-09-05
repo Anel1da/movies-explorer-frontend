@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 import "./MoviesCardList.css";
 import calculateMovieDuration from "../../utils/calculateMoviesDuration";
 import MoviesCard from "../MoviesCard/MoviesCard";
@@ -15,6 +14,7 @@ export default function MoviesCardList({
   handleSaveBtnClick,
   savedMovies,
 }) {
+  const { pathname } = useLocation();
   return (
     <>
       {moviesError !== "" ? (

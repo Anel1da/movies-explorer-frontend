@@ -15,13 +15,13 @@ export default function MoviesCard({
   const { pathname } = useLocation();
   const [isSaved, setIsSaved] = useState("");
 
-  useEffect(() => {
+   useEffect(() => {
     if (savedMovies.some((item) => item.movieId === movie.id)) {
       setIsSaved(true);
     } else {
       setIsSaved(false);
     }
-  }, savedMovies);
+  }, savedMovies); 
 
   function handleClick(movie) {
     handleSaveBtnClick(movie);
@@ -46,14 +46,13 @@ export default function MoviesCard({
           {pathname === "/movies" ? (
             <button
               type="button"
-              /*   className="movie__saveBtn movie__saveBtn_saved" */
               className={`movie__saveBtn  ${isSaved && "movie__saveBtn_saved"}`}
               onClick={() => handleClick(movie)}
             ></button>
           ) : (
             <button
               type="button"
-              className="movie__saveBtn"
+              className={`movie__saveBtn  movie__saveBtn_remove`}
               onClick={() => handleClick(movie)}
             ></button>
           )}
