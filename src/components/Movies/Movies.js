@@ -231,6 +231,8 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     () => filterShortMovies(savedMovies),
     [isShortMovies, savedMovies]
   );
+
+
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
     setTimeout(() => {
