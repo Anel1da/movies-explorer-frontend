@@ -215,8 +215,9 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   const filterShortMovies = (movies) => {
     if (isShortMovies) {
       return movies.filter((movie) => movie.duration <= SHORT_FILM_DURATION);
+    } else {
+      return movies;
     }
-    return movies.filter((movie) => movie.duration >= SHORT_FILM_DURATION);
   };
 
   function handleShortMovies() {
