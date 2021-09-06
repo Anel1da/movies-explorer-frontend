@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
 import "./App.css";
 import Header from "../Header/Header";
@@ -22,6 +22,7 @@ import Preloader from "../Preloader/Preloader";
 
 function App() {
   const history = useHistory();
+  const location = useLocation();
   const [currentUser, setCurrentUser] = React.useState({});
   const [isNavigationPopupOpened, setIsNavigationPopupOpened] =
     React.useState(false);
@@ -58,6 +59,7 @@ function App() {
       .then((user) => {
         setLoggedIn(true);
         setCurrentUser(user);
+        history.push(location.pathname);
       })
       .catch((error) => {
         handleInfoToolTipMessage({
