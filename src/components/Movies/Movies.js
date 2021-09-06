@@ -234,8 +234,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     [isShortMovies, savedMovies]
   );
 
-  /*  setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
-   */
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
     setTimeout(() => {
