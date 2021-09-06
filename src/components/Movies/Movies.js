@@ -47,10 +47,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     }
   }, []);
 
-  useEffect(() => {
-    loadMoreBtnVisible();
-  }, [foundMovies, numberOfCards]);
-
   function limitNumberOfCards() {
     const viewportWidth = window.screen.width;
     if (viewportWidth < MOBILE_VERSION) {
@@ -72,7 +68,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   };
 
   function loadMoreBtnVisible() {
-    if (foundMovies.length > numberOfCards.startCards) {
+    if (moviesforShow.length > numberOfCards.startCards) {
       setLoadMoreBtnVisibility(true);
     } else {
       setLoadMoreBtnVisibility(false);
@@ -233,6 +229,11 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     () => filterShortMovies(savedMovies),
     [isShortMovies, savedMovies]
   );
+
+  // отображение кнопки еще
+  useEffect(() => {
+    loadMoreBtnVisible();
+  }, [moviesforShow, numberOfCards]);
 
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
