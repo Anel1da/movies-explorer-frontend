@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import "./MoviesCardList.css";
 import calculateMovieDuration from "../../utils/calculateMoviesDuration";
 import MoviesCard from "../MoviesCard/MoviesCard";
