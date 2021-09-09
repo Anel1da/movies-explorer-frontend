@@ -125,6 +125,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
           movie.nameRU.toLowerCase().includes(query.toLowerCase())
         )
       );
+      checkArray(savedMovies);
     }
   };
 
