@@ -19,6 +19,7 @@ import tooltipSuccess from "./../../images/tooltip-success.svg";
 import tooltipDeny from "./../../images/tooltip-deny.svg";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import Preloader from "../Preloader/Preloader";
+import { LOGIN, REGISTER } from "./../../utils/utils";
 
 function App() {
   const history = useHistory();
@@ -35,23 +36,10 @@ function App() {
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  //хуки, получающие данные с сервера
+  // проверка статуса авторизации пользователя
   useEffect(() => {
     checkToken();
   }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
-      auth
-        .getUser()
-        .then((user) => {
-          setCurrentUser(user);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [history, loggedIn]);
-
-  // проверка статуса авторизации пользователя
 
   const checkToken = () => {
     auth
@@ -59,7 +47,11 @@ function App() {
       .then((user) => {
         setLoggedIn(true);
         setCurrentUser(user);
-        history.push(location.pathname);
+        history.push(
+          location.pathname === LOGIN || location.pathname === REGISTER
+            ? "/"
+            : location.pathname
+        );
       })
       .catch((error) => {
         handleInfoToolTipMessage({

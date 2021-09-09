@@ -1,5 +1,5 @@
-export const BASE_URL = "http://api.moviesexplorer.nomoredomains.club";
-/* export const BASE_URL = "http://localhost:3001"; */
+/* export const BASE_URL = "http://api.moviesexplorer.nomoredomains.club"; */
+export const BASE_URL = "http://localhost:3001";
 export const BASE_URL_MOVIE = "https://api.nomoreparties.co";
 
 export const NOT_FOUND_ERR = "Ничего не найдено";
@@ -12,3 +12,6 @@ export const SHORT_FILM_DURATION = 40;
 export const DESKTOP_VERSION = 1280;
 export const TABLET_VERSION = 1200;
 export const MOBILE_VERSION = 767;
+
+export const LOGIN = "/signin";
+export const REGISTER = "/signup";

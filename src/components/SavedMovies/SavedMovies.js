@@ -31,3 +31,13 @@ export default function MoviesCardList({
     </>
   );
 }
+
+/* const [noSavedMovies, setNoSavedMovies] = useState(true);
+useEffect(() => {
+  if ((savedMovies.lenght = 0)) {
+    setNoSavedMovies(true);
+  }
+}, [savedMovies]);
+return (
+  <>
+    {noSavedMovies === true  */

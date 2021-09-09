@@ -45,6 +45,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
     if (localStorage.getItem("savedMovies") !== null) {
       setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
     }
+    loadSearchedMovies();
   }, []);
 
   function limitNumberOfCards() {
@@ -126,6 +127,13 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
           movie.nameRU.toLowerCase().includes(query.toLowerCase())
         )
       );
+    }
+  };
+
+  //загрузка ранее найденнных фильмов
+  const loadSearchedMovies = () => {
+    if (localStorage.getItem("foundMovies") !== null) {
+      setFoundMovies(JSON.parse(localStorage.getItem("foundMovies")));
     }
   };
 

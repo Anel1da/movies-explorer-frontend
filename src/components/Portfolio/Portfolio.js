@@ -7,18 +7,33 @@ export default function Portfolio() {
     <section className="portfolio">
       <h2 className="portfolio__title">Портфолио</h2>
       <div className="portfolio__links">
-        <Link href="#" className="portfolio__link" target="_blank">
+        <a
+          href="https://github.com/Anel1da/how-to-learn"
+          className="portfolio__link"
+          target="_blank"
+          rel="noreferrer"
+        >
           <p> Статичный сайт</p>
           <img src={linkArrow} alt="link" className="portfolio__linkarrow" />
-        </Link>
-        <Link className="portfolio__link" href="#" target="_blank">
+        </a>
+        <a
+          className="portfolio__link"
+          href="https://github.com/Anel1da/russian-travel"
+          target="_blank"
+          rel="noreferrer"
+        >
           <p>Адаптивный сайт</p>
           <img src={linkArrow} alt="link" className="portfolio__linkarrow" />
-        </Link>
-        <Link className="portfolio__link" href="#" target="_blank">
+        </a>
+        <a
+          className="portfolio__link"
+          href="https://github.com/Anel1da/react-mesto-api-full"
+          target="_blank"
+          rel="noreferrer"
+        >
           <p>Одностраничное приложение</p>
           <img src={linkArrow} alt="link" className="portfolio__linkarrow" />
-        </Link>
+        </a>
       </div>
     </section>
   );
