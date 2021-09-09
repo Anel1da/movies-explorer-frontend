@@ -42,9 +42,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   useEffect(() => {
     limitNumberOfCards();
     loadSavedMovies();
-    if (localStorage.getItem("savedMovies") !== null) {
-      setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
-    }
+    loadLocalSavedMovies();
     loadSearchedMovies();
   }, []);
 
@@ -123,17 +121,10 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       }
     } else {
       setSavedMovies(
-        savedMovies.filter((movie) =>
+        JSON.parse(localStorage.getItem("savedMovies")).filter((movie) =>
           movie.nameRU.toLowerCase().includes(query.toLowerCase())
         )
       );
-    }
-  };
-
-  //загрузка ранее найденнных фильмов
-  const loadSearchedMovies = () => {
-    if (localStorage.getItem("foundMovies") !== null) {
-      setFoundMovies(JSON.parse(localStorage.getItem("foundMovies")));
     }
   };
 
@@ -149,6 +140,20 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       .catch((err) => {
         console.log("Ошибка: ", err);
       });
+  };
+
+  // загрузка локально сохраненных фильмов
+  const loadLocalSavedMovies = () => {
+    if (localStorage.getItem("savedMovies") !== null) {
+      setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
+    }
+  };
+
+  //загрузка ранее найденнных фильмов
+  const loadSearchedMovies = () => {
+    if (localStorage.getItem("foundMovies") !== null) {
+      setFoundMovies(JSON.parse(localStorage.getItem("foundMovies")));
+    }
   };
 
   //сохранение и удаление фильмов
