@@ -1,5 +1,5 @@
-/* export const BASE_URL = "http://api.moviesexplorer.nomoredomains.club"; */
-export const BASE_URL = "http://localhost:3001";
+export const BASE_URL = "http://api.moviesexplorer.nomoredomains.club";
+
 export const BASE_URL_MOVIE = "https://api.nomoreparties.co";
 
 export const NOT_FOUND_ERR = "Ничего не найдено";
