@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState, useMemo } from "react";
+import { React } from "react";
 import "./SavedMovies.css";
 import calculateMovieDuration from "../../utils/calculateMoviesDuration";
 import MoviesCard from "../MoviesCard/MoviesCard";
@@ -8,8 +8,6 @@ export default function MoviesCardList({
   handleSaveBtnClick,
   savedMovies,
 }) {
-
-  
   return (
     <>
       {moviesError !== "" ? (

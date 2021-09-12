@@ -21,7 +21,7 @@ export default function Profile({
 
   const handleSubmitUpdateProfile = (evt) => {
     evt.preventDefault();
-    if ((currentUser.name !== name) & (currentUser.email !== email)) {
+    if (currentUser.name !== name || currentUser.email !== email) {
       onUpdateProfile({ name, email });
     }
   };
