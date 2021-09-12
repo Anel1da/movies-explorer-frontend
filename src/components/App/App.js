@@ -19,7 +19,14 @@ import tooltipSuccess from "./../../images/tooltip-success.svg";
 import tooltipDeny from "./../../images/tooltip-deny.svg";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import Preloader from "../Preloader/Preloader";
-import { LOGIN, REGISTER } from "./../../utils/utils";
+import {
+  LOGIN,
+  REGISTER,
+  MAIN,
+  MOVIES,
+  SAVEDMOVIES,
+  PROFILE,
+} from "./../../utils/utils";
 
 function App() {
   const history = useHistory();
@@ -54,13 +61,20 @@ function App() {
         );
       })
       .catch((error) => {
-        handleInfoToolTipMessage({
-          icon: tooltipDeny,
-          message: "Пожалуйста авторизуйтесь для просмотра информации.",
-        });
-        handleInfoToolTipOpen(true);
-        history.push("/");
-        console.log(error);
+        if (
+          location.pathname === MOVIES ||
+          location.pathname === SAVEDMOVIES ||
+          location.pathname === PROFILE
+        ) {
+          handleInfoToolTipMessage({
+            icon: tooltipDeny,
+            message: "Пожалуйста авторизуйтесь для просмотра информации.",
+          });
+          handleInfoToolTipOpen(true);
+          console.log(error);
+        } else {
+          history.push(location.pathname);
+        }
       });
   };
 
@@ -178,7 +192,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Switch>
-          <Route exact path="/">
+          <Route exact path={MAIN}>
             <Header onClick={handleBurgerMenuClick} loggedIn={loggedIn} />
             <Main />
             <Footer />
@@ -187,14 +201,14 @@ function App() {
               onClose={closeAllPopups}
             />
           </Route>
-          <Route path="/signup">
+          <Route path={REGISTER}>
             <Register onRegister={handleRegister} />
           </Route>
-          <Route path="/signin">
+          <Route path={LOGIN}>
             <Login onLogin={handleLogin} />
           </Route>
           <ProtectedRoute
-            path="/movies"
+            path={MOVIES}
             component={Movies}
             loggedIn={loggedIn}
             isOpen={isNavigationPopupOpened}
@@ -202,7 +216,7 @@ function App() {
             onClick={handleBurgerMenuClick}
           />
           <ProtectedRoute
-            path="/saved-movies"
+            path={SAVEDMOVIES}
             loggedIn={loggedIn}
             component={Movies}
             isOpen={isNavigationPopupOpened}
@@ -210,7 +224,7 @@ function App() {
             onClick={handleBurgerMenuClick}
           />
           <ProtectedRoute
-            path="/profile"
+            path={PROFILE}
             loggedIn={loggedIn}
             component={Profile}
             handleLogOut={handleLogOut}

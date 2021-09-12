@@ -15,3 +15,7 @@ export const MOBILE_VERSION = 767;
 
 export const LOGIN = "/signin";
 export const REGISTER = "/signup";
+export const MAIN = "/";
+export const MOVIES = "/movies";
+export const SAVEDMOVIES = "/saved-movies";
+export const PROFILE = "/profile";
