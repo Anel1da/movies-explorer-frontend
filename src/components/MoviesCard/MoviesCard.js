@@ -21,7 +21,7 @@ export default function MoviesCard({
     } else {
       setIsSaved(false);
     }
-  }, savedMovies);
+  }, [savedMovies, movie.id]);
 
   function handleClick(movie) {
     handleSaveBtnClick(movie);

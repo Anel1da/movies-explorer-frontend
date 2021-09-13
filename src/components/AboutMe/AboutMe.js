@@ -1,5 +1,4 @@
 import "./AboutMe.css";
-import { Link } from "react-router-dom";
 import studentPhoto from "../../images/pic__COLOR_pic.png";
 
 export default function AboutMe() {
@@ -18,12 +17,22 @@ export default function AboutMe() {
             заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
           <div className="about-me__links">
-            <Link className="about-me__link" href="#">
+            <a
+              className="about-me__link"
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Facebook
-            </Link>
-            <Link className="about-me__link" href="#">
+            </a>
+            <a
+              className="about-me__link"
+              href="https://github.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Github
-            </Link>
+            </a>
           </div>
         </div>
         <img

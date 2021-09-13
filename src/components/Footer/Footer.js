@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./Footer.css";
 
 export default function Footer() {
@@ -10,15 +9,30 @@ export default function Footer() {
       <div className="footer__container">
         <p className="footer__date">&copy; 2021</p>
         <div className="footer__links">
-          <Link href="#" className="footer__link" target="_blank">
+          <a
+            href="https://practicum.yandex.ru/"
+            className="footer__link"
+            target="_blank"
+            rel="noreferrer"
+          >
             Яндекс.Практикум
-          </Link>
-          <Link href="#" className="footer__link" target="_blank">
+          </a>
+          <a
+            href="https://github.com/"
+            className="footer__link"
+            target="_blank"
+            rel="noreferrer"
+          >
             Github
-          </Link>
-          <Link href="#" className="footer__link" target="_blank">
+          </a>
+          <a
+            href="https://www.facebook.com/"
+            className="footer__link"
+            target="_blank"
+            rel="noreferrer"
+          >
             Facebook
-          </Link>
+          </a>
         </div>
       </div>
     </div>
