@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
+import { MOVIES } from "./../../utils/utils";
 
 export default function MoviesCard({
   movie,
@@ -42,7 +43,7 @@ export default function MoviesCard({
           <h3 className="movie__title">{movieTitle}</h3>
           <p className="movie__duration">{movieDuration}</p>
         </div>
-        {pathname === "/movies" ? (
+        {pathname === MOVIES ? (
           <button
             type="button"
             className={`movie__saveBtn  ${isSaved && "movie__saveBtn_saved"}`}

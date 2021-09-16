@@ -3,6 +3,7 @@ import React from "react";
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import useFormWithValidation from "../../hooks/useFormWithValidation";
+import { MAIN } from "./../../utils/utils";
 
 export default function Login({ onLogin }) {
   const { values, errors, isValid, handleChange } = useFormWithValidation();
@@ -15,7 +16,7 @@ export default function Login({ onLogin }) {
 
   return (
     <section className="login">
-      <Link to="/">
+      <Link to={MAIN}>
         <img src={logo} className="login__logo" alt="Логотип" />
       </Link>
       <h1 className="login__title">Рады Вас видеть!</h1>

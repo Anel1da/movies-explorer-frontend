@@ -3,6 +3,7 @@ import { React } from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 import useFormWithValidation from "../../hooks/useFormWithValidation";
+import { LOGIN, MAIN } from "./../../utils/utils";
 
 export default function Register({ onRegister }) {
   const { values, errors, isValid, handleChange } = useFormWithValidation();
@@ -15,7 +16,7 @@ export default function Register({ onRegister }) {
 
   return (
     <section className="register">
-      <Link to="/">
+      <Link to={MAIN}>
         <img src={logo} className="register__logo" alt="Логотип" />
       </Link>
       <h1 className="register__title">Добро пожаловать!</h1>
@@ -99,7 +100,7 @@ export default function Register({ onRegister }) {
         </button>
         <span className="register__login">
           Уже зарегистрированы?
-          <Link className="register__login-link" to="/signin">
+          <Link className="register__login-link" to={LOGIN}>
             Войти
           </Link>
         </span>

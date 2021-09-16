@@ -1,4 +1,11 @@
-import { React, useContext, useEffect, useState, useMemo } from "react";
+import {
+  React,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Movies.css";
@@ -11,13 +18,14 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Preloader from "../Preloader/Preloader";
 import * as moviesApi from "../../utils/MoviesApi";
 import * as mainApi from "../../utils/MainApi";
-
 import {
   NOT_FOUND_ERR,
   FAILED_TO_FETCH_ERR,
   TABLET_VERSION,
   MOBILE_VERSION,
   SHORT_FILM_DURATION,
+  MOVIES,
+  SAVEDMOVIES,
 } from "../../utils/utils";
 
 export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
@@ -29,23 +37,19 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
   const [foundMovies, setFoundMovies] = useState([]); //все найденные по запросу фильмы
   const [savedMovies, setSavedMovies] = useState([]); // фильмы, добавленные в сохраненные
   const [isShortMovies, setIsShortMovies] = useState(false);
-
   const [numberOfCards, setNumberOfCards] = useState({
     //количество карточек для отрисовки
     startCards: 0,
     rowCards: 0,
     moreCards: 0,
   });
-
   // при загрузке страницы
-
   useEffect(() => {
     limitNumberOfCards();
     loadSavedMovies();
     loadLocalSavedMovies();
     loadSearchedMovies();
   }, []);
-
   function limitNumberOfCards() {
     const viewportWidth = window.screen.width;
     if (viewportWidth < MOBILE_VERSION) {
@@ -56,16 +60,13 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       setNumberOfCards({ startCards: 12, rowCards: 3, moreCards: 3 });
     }
   }
-
   // кнопка Еще
-
   const loadMoreBtnHandler = () => {
     return setNumberOfCards({
       ...numberOfCards,
       startCards: numberOfCards.startCards + numberOfCards.moreCards,
     });
   };
-
   function loadMoreBtnVisible() {
     if (moviesforShow.length > numberOfCards.startCards) {
       setLoadMoreBtnVisibility(true);
@@ -73,17 +74,21 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       setLoadMoreBtnVisibility(false);
     }
   }
-
   // поиск по ключевому слову с проверкой длины массива
   const filterMoviesByKeyword = (movies, query) => {
     const filteredMovies = movies.filter((movie) =>
       movie.nameRU.toLowerCase().includes(query.toLowerCase())
     );
-    setFoundMovies(() => {
-      localStorage.setItem("foundMovies", JSON.stringify(filteredMovies));
-      return filteredMovies;
-    });
-    checkArray(filteredMovies);
+    if (pathname === "/movies") {
+      setFoundMovies(() => {
+        localStorage.setItem("foundMovies", JSON.stringify(filteredMovies));
+        return filteredMovies;
+      });
+      checkArray(filteredMovies);
+    } else {
+      setSavedMovies(filteredMovies);
+      checkArray(filteredMovies);
+    }
   };
 
   //проверка длины массива
@@ -94,7 +99,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       setMoviesError("");
     }
   }
-
   //поиск фильмов
   const searchMovieHandler = (query) => {
     if (pathname === "/movies") {
@@ -120,12 +124,10 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
         );
       }
     } else {
-      setSavedMovies(
-        JSON.parse(localStorage.getItem("savedMovies")).filter((movie) =>
-          movie.nameRU.toLowerCase().includes(query.toLowerCase())
-        )
+      filterMoviesByKeyword(
+        JSON.parse(localStorage.getItem("savedMovies")),
+        query
       );
-      checkArray(savedMovies);
     }
   };
 
@@ -142,23 +144,19 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
         console.log("Ошибка: ", err);
       });
   };
-
   // загрузка локально сохраненных фильмов
   const loadLocalSavedMovies = () => {
     if (localStorage.getItem("savedMovies") !== null) {
       setSavedMovies(JSON.parse(localStorage.getItem("savedMovies")));
     }
   };
-
   //загрузка ранее найденнных фильмов
   const loadSearchedMovies = () => {
     if (localStorage.getItem("foundMovies") !== null) {
       setFoundMovies(JSON.parse(localStorage.getItem("foundMovies")));
     }
   };
-
   //сохранение и удаление фильмов
-
   const saveMovie = (data) => {
     mainApi
       .saveMovie(data)
@@ -171,7 +169,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       })
       .catch((err) => console.log("Ошибка: ", err));
   };
-
   const deleteMovie = (movie) => {
     mainApi
       .deleteMovie(movie._id)
@@ -184,7 +181,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       })
       .catch((err) => console.log("Ошибка: ", err));
   };
-
   function handleSaveBtnClick(movie) {
     if (pathname === "/movies") {
       if (!savedMovies.some((item) => item.movieId === movie.id)) {
@@ -220,7 +216,6 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       deleteMovie(movieForDelete);
     }
   }
-
   // чекбокс
   const filterShortMovies = (movies) => {
     if (isShortMovies) {
@@ -229,33 +224,27 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
       return movies;
     }
   };
-
   function handleShortMovies() {
     setIsShortMovies(!isShortMovies);
   }
-
   const moviesforShow = useMemo(
     () => filterShortMovies(foundMovies),
     [isShortMovies, foundMovies]
   );
-
   const savedMoviesforShow = useMemo(
     () => filterShortMovies(savedMovies),
     [isShortMovies, savedMovies]
   );
-
   // отображение кнопки еще
   useEffect(() => {
     loadMoreBtnVisible();
   }, [moviesforShow, numberOfCards]);
-
   //отслеживание изменение ширины экрана
   window.addEventListener("resize", function () {
     setTimeout(() => {
       limitNumberOfCards();
     }, 250);
   });
-
   return (
     <>
       <Header onClick={onClick} />
@@ -266,7 +255,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
           setIsShortMovies={handleShortMovies}
         />
         <Switch>
-          <Route path="/movies">
+          <Route path={MOVIES}>
             {isLoading ? (
               <Preloader />
             ) : (
@@ -281,7 +270,7 @@ export default function Movies({ loggedIn, isOpen, onClose, onClick }) {
               />
             )}
           </Route>
-          <Route path="/saved-movies">
+          <Route path={SAVEDMOVIES}>
             {isLoading ? (
               <Preloader />
             ) : (

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
 import "./App.css";
@@ -42,41 +42,6 @@ function App() {
   });
 
   const [isLoading, setIsLoading] = React.useState(false);
-
-  // проверка статуса авторизации пользователя
-  useEffect(() => {
-    checkToken();
-  }, []);
-
-  const checkToken = () => {
-    auth
-      .getUser()
-      .then((user) => {
-        setLoggedIn(true);
-        setCurrentUser(user);
-        history.push(
-          location.pathname === LOGIN || location.pathname === REGISTER
-            ? "/"
-            : location.pathname
-        );
-      })
-      .catch((error) => {
-        if (
-          location.pathname === MOVIES ||
-          location.pathname === SAVEDMOVIES ||
-          location.pathname === PROFILE
-        ) {
-          handleInfoToolTipMessage({
-            icon: tooltipDeny,
-            message: "Пожалуйста авторизуйтесь для просмотра информации.",
-          });
-          handleInfoToolTipOpen(true);
-          console.log(error);
-        } else {
-          history.push(location.pathname);
-        }
-      });
-  };
 
   //обработчики событий
   const handleBurgerMenuClick = () => {
@@ -128,7 +93,7 @@ function App() {
           message: "Вы успешно авторизовались!",
         });
         handleInfoToolTipOpen(true);
-        history.push("/movies");
+        history.push(MOVIES);
       })
       .catch((error) => {
         handleInfoToolTipMessage({
@@ -151,7 +116,7 @@ function App() {
         setLoggedIn(false);
         setCurrentUser({});
         localStorage.clear();
-        history.push("/");
+        history.push(MAIN);
       })
       .catch((error) => {
         handleInfoToolTipMessage({
@@ -187,6 +152,30 @@ function App() {
       })
       .finally(() => setIsLoading(false));
   };
+
+  // проверка статуса авторизации пользователя
+
+  const checkToken = useCallback(() => {
+    auth
+      .getUser()
+      .then((user) => {
+        setLoggedIn(true);
+        setCurrentUser(user);
+        history.push(
+          location.pathname === LOGIN || location.pathname === REGISTER
+            ? MAIN
+            : location.pathname
+        );
+      })
+      .catch((error) => {
+        setLoggedIn(false);
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    checkToken();
+  }, [checkToken]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

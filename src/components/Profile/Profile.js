@@ -33,6 +33,7 @@ export default function Profile({
     });
   }, [setValues, currentUser]);
 
+
   return (
     <>
       <Header loggedIn={loggedIn} onClick={onClick} />
