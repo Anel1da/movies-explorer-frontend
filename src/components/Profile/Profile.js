@@ -1,47 +1,98 @@
 import "./Profile.css";
-import React from "react";
-import Preloader from "../Preloader/Preloader";
+import React, { useContext, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import Header from "../Header/Header";
+import Navigation from "../Navigation/Navigation";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 
-export default function Profile() {
+export default function Profile({
+  handleLogOut,
+  onUpdateProfile,
+  loggedIn,
+  onClick,
+  isOpen,
+  onClose,
+}) {
+  const currentUser = useContext(CurrentUserContext);
+  const { values, setValues, handleChange, errors, isValid } =
+    useFormWithValidation();
+  const { name, email } = values;
+
+  const handleSubmitUpdateProfile = (evt) => {
+    evt.preventDefault();
+    if (currentUser.name !== name || currentUser.email !== email) {
+      onUpdateProfile({ name, email });
+    }
+  };
+
+  useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [setValues, currentUser]);
+
+
   return (
-    <section className="profile">
-      <h2 className="profile__title">{`Привет, Виталий!`}</h2>
+    <>
+      <Header loggedIn={loggedIn} onClick={onClick} />
+      <section className="profile">
+        <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
 
-      <form className="profile__form">
-        <label className="profile__label">
-          Имя
-          <input
-            id="name"
-            name="name"
-            type="name"
-            className="profile__input"
-            placeholder="Виталий"
-            required
-          />
-          <span className="profile__error-message"></span>
-        </label>
+        <form className="profile__form" onSubmit={handleSubmitUpdateProfile}>
+          <label className="profile__label">
+            Имя
+            <input
+              id="name"
+              name="name"
+              type="name"
+              className="profile__input"
+              required
+              minLength="2"
+              maxLength="30"
+              value={values.name || ""}
+              onChange={handleChange}
+              autoComplete="off"
+            />
+            <span className="profile__error-message"> {errors.name || ""}</span>
+          </label>
 
-        <label className="profile__label">
-          E-mail
-          <input
-            id="email"
-            name="email"
-            type="email"
-            className="profile__input"
-            required
-            placeholder="pochta@yandex.ru"
-            noValidate
-          ></input>
-          <span className="profile__error-message"></span>
-        </label>
+          <label className="profile__label">
+            E-mail
+            <input
+              id="email"
+              name="email"
+              type="email"
+              className="profile__input"
+              required
+              minLength="2"
+              maxLength="30"
+              value={values.email || ""}
+              onChange={handleChange}
+              autoComplete="off"
+            ></input>
+            <span className="profile__error-message">
+              {" "}
+              {errors.email || ""}
+            </span>
+          </label>
 
-        <button className="profile__edit-button" type="submit">
-          Редактировать
-        </button>
-        <button className="profile__logout-button" type="submit">
-          Выйти из аккаунта
-        </button>
-      </form>
-    </section>
+          <button
+            type="submit"
+            disabled={!isValid && true}
+            className={`profile__edit-button ${
+              !isValid && "profile__edit-button_disabled"
+            }`}
+          >
+            Редактировать
+          </button>
+          <NavLink to="/" className="profile__logout" onClick={handleLogOut}>
+            Выйти из аккаунта
+          </NavLink>
+        </form>
+      </section>
+      <Navigation isOpen={isOpen} onClose={onClose} />
+    </>
   );
 }

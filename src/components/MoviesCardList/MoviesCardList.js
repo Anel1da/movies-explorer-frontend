@@ -1,24 +1,47 @@
-import "./MoviesCardList.css";
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import "./MoviesCardList.css";
+import calculateMovieDuration from "../../utils/calculateMoviesDuration";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import MoreButton from "../MoreButton/MoreButton";
-import SavedMovies from '../SavedMovies/SavedMovies';
 
-export default function MoviesCardList() {
+export default function MoviesCardList({
+  movies,
+  initalNumberOfCards,
+  moviesError,
+  loadMoreBtnHandler,
+  loadMoreBtnVisibility,
+  handleSaveBtnClick,
+  savedMovies,
+}) {
+
   return (
     <>
-      <section className="movies-list">
-        <Switch>
-          <Route exact path="/movies">
-            <MoviesCard />
-          </Route>
-          <Route exact path="/saved-movies">
-            <SavedMovies />
-          </Route>
-        </Switch>
-      </section>
-      <MoreButton />
+      {moviesError !== "" ? (
+        <p className={`movies-list__noresult`}>{moviesError}</p>
+      ) : (
+        <section className={`movies-list`}>
+          {movies.slice(0, initalNumberOfCards).map((movie) => (
+            <MoviesCard
+              movie={movie}
+              key={movie.id}
+              movieTitle={movie.nameRU}
+              movieDuration={calculateMovieDuration(movie.duration)}
+              movieTrailer={movie.trailerLink}
+              movieImage={
+                movie.image
+                  ? `https://api.nomoreparties.co${movie.image.url}`
+                  : "https://imgur.com/j6h8g1O"
+              }
+              handleSaveBtnClick={handleSaveBtnClick}
+              savedMovies={savedMovies}
+            />
+          ))}
+        </section>
+      )}
+      <MoreButton
+        isVisible={loadMoreBtnVisibility}
+        onClick={loadMoreBtnHandler}
+      />
     </>
   );
 }

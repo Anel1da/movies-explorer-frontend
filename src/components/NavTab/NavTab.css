@@ -35,6 +35,7 @@ margin: 0 auto 30px;
 .navtab__link-item:hover {
     opacity: 0.6;
     border-bottom: 2px solid #FFFFFF;
+    cursor: pointer;
   }
 
   @media screen and (min-width: 320px) and (max-width: 767px) {

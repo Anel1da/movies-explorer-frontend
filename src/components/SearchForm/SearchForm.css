@@ -115,6 +115,7 @@
     
     .search-form__submit-btn:hover {
         opacity: 0.6;
+        cursor: pointer;
       }
     
       .search-form__btn-icon {

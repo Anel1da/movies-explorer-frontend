@@ -46,6 +46,7 @@
 
 .header__logo:hover {
   opacity: 0.6;
+  cursor: pointer;
 }
 
 
@@ -100,6 +101,11 @@
 
   .header__link:hover {
     opacity: 0.6;
+    border-bottom: 2px solid #FFFFFF;
+    cursor: pointer;
+  }
+
+  .header__link_active {
     border-bottom: 2px solid #FFFFFF;
   }
 
@@ -176,4 +182,5 @@
 
   .header__btn-menu:hover {
     opacity: 0.6; 
+    cursor: pointer;
   }
